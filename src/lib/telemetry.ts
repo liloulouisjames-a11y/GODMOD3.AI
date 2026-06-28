@@ -95,6 +95,7 @@ export interface ChatTelemetryData {
 let eventBuffer: TelemetryEvent[] = []
 let flushTimer: ReturnType<typeof setInterval> | null = null
 let sessionId: string | null = null
+let beforeUnloadListener: (() => void) | null = null
 
 function getSessionId(): string {
   if (!sessionId) {
@@ -157,15 +158,16 @@ export function startTelemetry(): void {
     }
   }, FLUSH_INTERVAL_MS)
 
-  // Flush on page unload (best-effort via sendBeacon)
-  if (typeof window !== 'undefined') {
-    window.addEventListener('beforeunload', () => {
+  // Flush on page unload (best-effort via sendBeacon) — register only once
+  if (typeof window !== 'undefined' && !beforeUnloadListener) {
+    beforeUnloadListener = () => {
       if (eventBuffer.length > 0) {
         const payload = JSON.stringify({ events: eventBuffer })
         navigator.sendBeacon(TELEMETRY_ENDPOINT, payload)
         eventBuffer = []
       }
-    })
+    }
+    window.addEventListener('beforeunload', beforeUnloadListener)
   }
 }
 
@@ -176,6 +178,11 @@ export function stopTelemetry(): void {
   if (flushTimer) {
     clearInterval(flushTimer)
     flushTimer = null
+  }
+  // Clean up beforeunload listener
+  if (typeof window !== 'undefined' && beforeUnloadListener) {
+    window.removeEventListener('beforeunload', beforeUnloadListener)
+    beforeUnloadListener = null
   }
   if (eventBuffer.length > 0) {
     flush()
