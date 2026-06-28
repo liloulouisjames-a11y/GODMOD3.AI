@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect, KeyboardEvent } from 'react'
+import { useState, useRef, useEffect, useMemo, KeyboardEvent } from 'react'
 import { useStore } from '@/store'
 import { sendMessage, sendMessageViaProxy, streamUltraplinian, streamConsortium } from '@/lib/openrouter'
 import { recordChatEvent } from '@/lib/telemetry'
@@ -137,6 +137,48 @@ export function ChatInput() {
   // Proxy mode: when no personal OpenRouter key, route through self-hosted API
   const proxyMode = !apiKey && !!ultraplinianApiUrl && !!ultraplinianApiKey
 
+  // Memoize active memories and memory context (single-pass filtering)
+  const { activeMemories, memoryContext } = useMemo(() => {
+    if (!memoriesEnabled) return { activeMemories: [], memoryContext: '' }
+
+    const active = memories.filter(m => m.active)
+    if (active.length === 0) return { activeMemories: active, memoryContext: '' }
+
+    // Single pass: categorize in one iteration
+    const facts: typeof active = []
+    const preferences: typeof active = []
+    const instructions: typeof active = []
+
+    for (const memory of active) {
+      if (memory.type === 'fact') facts.push(memory)
+      else if (memory.type === 'preference') preferences.push(memory)
+      else if (memory.type === 'instruction') instructions.push(memory)
+    }
+
+    let context = '\n\n<user_memory>\n'
+    if (facts.length > 0) {
+      context += '## About the User\n'
+      facts.forEach(f => { context += `- ${f.content}\n` })
+    }
+    if (preferences.length > 0) {
+      context += '\n## User Preferences\n'
+      preferences.forEach(p => { context += `- ${p.content}\n` })
+    }
+    if (instructions.length > 0) {
+      context += '\n## Always Follow\n'
+      instructions.forEach(i => { context += `- ${i.content}\n` })
+    }
+    context += '</user_memory>\n'
+
+    return { activeMemories: active, memoryContext: context }
+  }, [memoriesEnabled, memories])
+
+  // Memoize active memory count
+  const activeMemoryCount = useMemo(
+    () => activeMemories.length,
+    [activeMemories]
+  )
+
   const handleSubmit = async () => {
     if (!input.trim() || !currentConversationId || isStreaming) return
     if (!apiKey && !proxyMode) return
@@ -160,30 +202,6 @@ export function ChatInput() {
     // Get persona and model
     const persona = personas.find(p => p.id === currentConversation?.persona) || personas[0]
     const model = currentConversation?.model || 'anthropic/claude-3-opus'
-
-    // Build memory context if enabled
-    const activeMemories = memoriesEnabled ? memories.filter(m => m.active) : []
-    let memoryContext = ''
-    if (activeMemories.length > 0) {
-      const facts = activeMemories.filter(m => m.type === 'fact')
-      const preferences = activeMemories.filter(m => m.type === 'preference')
-      const instructions = activeMemories.filter(m => m.type === 'instruction')
-
-      memoryContext = '\n\n<user_memory>\n'
-      if (facts.length > 0) {
-        memoryContext += '## About the User\n'
-        facts.forEach(f => { memoryContext += `- ${f.content}\n` })
-      }
-      if (preferences.length > 0) {
-        memoryContext += '\n## User Preferences\n'
-        preferences.forEach(p => { memoryContext += `- ${p.content}\n` })
-      }
-      if (instructions.length > 0) {
-        memoryContext += '\n## Always Follow\n'
-        instructions.forEach(i => { memoryContext += `- ${i.content}\n` })
-      }
-      memoryContext += '</user_memory>\n'
-    }
 
     // Build system prompt with GODMODE prompt + memory
     const basePrompt = useCustomSystemPrompt ? customSystemPrompt : (persona.systemPrompt || persona.coreDirective || '')
@@ -642,11 +660,8 @@ export function ChatInput() {
     }
   }
 
-  // Determine which result to show (live preview while typing, last result after send)
-  const displayResult = livePreview || autoTuneLastResult
-
-  // Count active memories for display
-  const activeMemoryCount = memoriesEnabled ? memories.filter(m => m.active).length : 0
+  // Memoize displayed result (live preview while typing, last result after send)
+  const displayResult = useMemo(() => livePreview || autoTuneLastResult, [livePreview, autoTuneLastResult])
 
   return (
     <div className="border-t border-theme-primary bg-theme-dim/50 p-4">
@@ -698,39 +713,7 @@ export function ChatInput() {
             )}
 
             {/* Parameter Grid with Deltas */}
-            <div className="grid grid-cols-6 gap-2">
-              {(Object.entries(displayResult.params) as [keyof typeof PARAM_META, number][]).map(
-                ([key, value]) => {
-                  // Find if there's a delta for this param
-                  const delta = displayResult.paramDeltas?.find(d => d.param === key)
-                  const hasDelta = delta && Math.abs(delta.delta) > 0.001
-
-                  return (
-                    <div
-                      key={key}
-                      className={`text-center p-1.5 rounded border transition-all
-                        ${hasDelta
-                          ? 'bg-cyan-500/10 border-cyan-500/30'
-                          : 'bg-theme-dim border-theme-primary/30'
-                        }`}
-                      title={delta?.reason || PARAM_META[key].description}
-                    >
-                      <div className="text-[10px] theme-secondary font-mono">
-                        {PARAM_META[key].short}
-                      </div>
-                      <div className="text-sm font-bold theme-primary font-mono">
-                        {typeof value === 'number' ? value.toFixed(2) : value}
-                      </div>
-                      {hasDelta && (
-                        <div className={`text-[9px] font-mono ${delta.delta > 0 ? 'text-green-400' : 'text-red-400'}`}>
-                          {delta.delta > 0 ? '+' : ''}{delta.delta.toFixed(2)}
-                        </div>
-                      )}
-                    </div>
-                  )
-                }
-              )}
-            </div>
+            <ParameterGrid params={displayResult.params} deltas={displayResult.paramDeltas} />
 
             {/* Delta Explanations - what changed and why */}
             {displayResult.paramDeltas && displayResult.paramDeltas.length > 0 && (
@@ -883,6 +866,45 @@ export function ChatInput() {
           )}
         </div>
       </div>
+    </div>
+  )
+}
+
+// Memoized parameter grid component to avoid re-rendering on every parent render
+function ParameterGrid({ params, deltas }: { params: Record<string, number>, deltas: any[] | undefined }) {
+  const paramEntries = useMemo(() => Object.entries(params) as [keyof typeof PARAM_META, number][], [params])
+  const deltaMap = useMemo(() => new Map(deltas?.map(d => [d.param, d]) || []), [deltas])
+
+  return (
+    <div className="grid grid-cols-6 gap-2">
+      {paramEntries.map(([key, value]) => {
+        const delta = deltaMap.get(key)
+        const hasDelta = delta && Math.abs(delta.delta) > 0.001
+
+        return (
+          <div
+            key={key}
+            className={`text-center p-1.5 rounded border transition-all
+              ${hasDelta
+                ? 'bg-cyan-500/10 border-cyan-500/30'
+                : 'bg-theme-dim border-theme-primary/30'
+              }`}
+            title={delta?.reason || PARAM_META[key].description}
+          >
+            <div className="text-[10px] theme-secondary font-mono">
+              {PARAM_META[key].short}
+            </div>
+            <div className="text-sm font-bold theme-primary font-mono">
+              {typeof value === 'number' ? value.toFixed(2) : value}
+            </div>
+            {hasDelta && (
+              <div className={`text-[9px] font-mono ${delta.delta > 0 ? 'text-green-400' : 'text-red-400'}`}>
+                {delta.delta > 0 ? '+' : ''}{delta.delta.toFixed(2)}
+              </div>
+            )}
+          </div>
+        )
+      })}
     </div>
   )
 }
