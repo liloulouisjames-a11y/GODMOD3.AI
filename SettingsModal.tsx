@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useStore, Theme, MemoryType, DEFAULT_GODMODE_PROMPT } from '@/store'
 import type { TierInfo } from '@/store'
 import {
@@ -457,7 +457,7 @@ function AutoTuneTab() {
   } = useStore()
 
   const [showResetConfirm, setShowResetConfirm] = useState(false)
-  const feedbackStats = getFeedbackStats(feedbackState)
+  const feedbackStats = useMemo(() => getFeedbackStats(feedbackState), [feedbackState])
 
   const strategies: AutoTuneStrategy[] = ['adaptive', 'precise', 'balanced', 'creative', 'chaotic']
 
@@ -672,9 +672,10 @@ function AutoTuneTab() {
 
                 {/* Per-context breakdown */}
                 <div className="grid grid-cols-1 gap-2">
-                  {(Object.entries(feedbackStats.contextBreakdown) as [string, { total: number; positive: number; negative: number; hasLearned: boolean }][])
-                    .filter(([, data]) => data.total > 0)
-                    .map(([ctx, data]) => (
+                  {useMemo(() => {
+                    return (Object.entries(feedbackStats.contextBreakdown) as [string, { total: number; positive: number; negative: number; hasLearned: boolean }][])
+                      .filter(([, data]) => data.total > 0)
+                  }, [feedbackStats.contextBreakdown]).map(([ctx, data]) => (
                       <div
                         key={ctx}
                         className={`flex items-center justify-between p-2 rounded-lg border ${
@@ -1410,7 +1411,7 @@ function MemoryTab() {
     }
   }
 
-  const activeMemories = memories.filter(m => m.active)
+  const activeMemories = useMemo(() => memories.filter(m => m.active), [memories])
 
   return (
     <div className="space-y-5">
@@ -2182,20 +2183,24 @@ function DataTab() {
   const [pendingImportSummary, setPendingImportSummary] = useState('')
 
   const MAX_IMPORT_SIZE = 10 * 1024 * 1024 // 10 MB
+  const STORAGE_CAP = 5 * 1024 * 1024 // ~5 MB typical browser limit
 
-  // Estimate localStorage usage
-  const storageUsed = (() => {
+  // Memoize storage calculation to avoid looping localStorage on every render
+  const { storageUsed, storagePercent } = useMemo(() => {
     try {
       let total = 0
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i)
         if (key) total += key.length + (localStorage.getItem(key)?.length || 0)
       }
-      return total * 2 // UTF-16 = 2 bytes per char
-    } catch { return 0 }
-  })()
-  const STORAGE_CAP = 5 * 1024 * 1024 // ~5 MB typical browser limit
-  const storagePercent = Math.min(100, Math.round((storageUsed / STORAGE_CAP) * 100))
+      const bytes = total * 2 // UTF-16 = 2 bytes per char
+      const percent = Math.min(100, Math.round((bytes / STORAGE_CAP) * 100))
+      return { storageUsed: bytes, storagePercent: percent }
+    } catch {
+      return { storageUsed: 0, storagePercent: 0 }
+    }
+  }, [])
+
   const formatBytes = (b: number) => b < 1024 ? `${b} B` : b < 1048576 ? `${(b / 1024).toFixed(1)} KB` : `${(b / 1048576).toFixed(1)} MB`
 
   const handleExport = () => {
