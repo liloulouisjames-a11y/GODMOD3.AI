@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Command Centre</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <!-- Chart.js (CDN). Charts degrade gracefully if offline. -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">CC</div>
+        <div><h1>Command Centre</h1><small>Automation engine</small></div>
+      </div>
+      <nav class="nav" id="nav">
+        <button data-view="dashboard" class="active"><span class="icon">📊</span> Dashboard</button>
+        <button data-view="crm"><span class="icon">💬</span> CRM &amp; Inbox</button>
+        <button data-view="social"><span class="icon">📣</span> Social Studio</button>
+        <button data-view="calendar"><span class="icon">🗓️</span> Content Calendar</button>
+        <button data-view="appointments"><span class="icon">📅</span> Appointments</button>
+        <button data-view="tasks"><span class="icon">✅</span> Tasks &amp; Leads</button>
+        <button data-view="settings"><span class="icon">⚙️</span> Settings</button>
+      </nav>
+      <div class="sidebar-footer">
+        <div id="bizLegend"></div>
+        <button class="btn ghost sm" style="width:100%;margin-top:10px" onclick="logout()">Sign out</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <h2 id="viewTitle">Dashboard</h2>
+        <div class="cmd-bar">
+          <input id="cmd" placeholder='Command bar — e.g. "post tomorrow at 9am to all platforms: New arrivals!"' />
+          <span class="cmd-hint">↵ to run</span>
+        </div>
+      </div>
+      <div id="view"></div>
+    </main>
+  </div>
+
+  <div id="modalRoot"></div>
+  <div id="toast"></div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

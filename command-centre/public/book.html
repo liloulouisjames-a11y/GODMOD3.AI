@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book an appointment</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="center-narrow">
+    <div class="brand" style="justify-content:center;margin-bottom:20px">
+      <div class="logo">CC</div>
+      <div><h1>Book an appointment</h1><small>Choose a service and time</small></div>
+    </div>
+    <div class="card" id="formCard">
+      <label>Business</label>
+      <select id="biz"></select>
+      <label>Service</label>
+      <select id="svc"></select>
+      <label>Your name</label>
+      <input id="name" />
+      <label>Phone (WhatsApp for reminders)</label>
+      <input id="phone" placeholder="+230…" />
+      <label>Preferred date &amp; time</label>
+      <input type="datetime-local" id="when" />
+      <label>Notes (optional)</label>
+      <textarea id="notes" rows="2"></textarea>
+      <button class="btn" style="width:100%;margin-top:16px" onclick="book()">Request booking</button>
+      <p id="msg" class="muted" style="margin-top:12px;font-size:13px"></p>
+    </div>
+  </div>
+  <script>
+    let SERVICES = [];
+    async function init() {
+      const businesses = await (await fetch('/api/public/businesses')).json();
+      SERVICES = await (await fetch('/api/public/services')).json();
+      document.getElementById('biz').innerHTML = businesses.map((b) => `<option value="${b.id}">${b.name}</option>`).join('');
+      document.getElementById('biz').addEventListener('change', fillServices);
+      fillServices();
+    }
+    function fillServices() {
+      const biz = Number(document.getElementById('biz').value);
+      const opts = SERVICES.filter((s) => s.business_id === biz);
+      document.getElementById('svc').innerHTML = opts.map((s) => `<option value="${s.id}">${s.name} (${s.duration_min} min${s.price ? ' · Rs ' + s.price : ''})</option>`).join('');
+    }
+    async function book() {
+      const body = {
+        business_id: Number(document.getElementById('biz').value),
+        service_id: Number(document.getElementById('svc').value),
+        name: document.getElementById('name').value,
+        phone: document.getElementById('phone').value,
+        starts_at: new Date(document.getElementById('when').value).toISOString(),
+        notes: document.getElementById('notes').value,
+      };
+      const res = await fetch('/api/public/book', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      const data = await res.json();
+      const msg = document.getElementById('msg');
+      if (res.ok) {
+        document.getElementById('formCard').innerHTML = '<h3 style="color:var(--green)">✓ Booking requested!</h3><p class="muted">We\'ll confirm shortly and send a reminder before your appointment.</p>';
+      } else {
+        msg.style.color = 'var(--red)';
+        msg.textContent = data.error || 'Something went wrong.';
+      }
+    }
+    init();
+  </script>
+</body>
+</html>

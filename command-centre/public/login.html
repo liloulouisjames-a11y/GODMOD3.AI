@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Command Centre — Login</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="auth-wrap">
+    <div class="card auth-card">
+      <div class="brand" style="margin-bottom:18px">
+        <div class="logo">CC</div>
+        <div><h1>Command Centre</h1><small>Business automation engine</small></div>
+      </div>
+      <form id="loginForm">
+        <label>Username</label>
+        <input name="username" value="admin" autocomplete="username" />
+        <label>Password</label>
+        <input name="password" type="password" autocomplete="current-password" />
+        <div id="err" class="muted" style="color:var(--red);font-size:13px;margin-top:10px"></div>
+        <button class="btn" style="width:100%;margin-top:16px" type="submit">Sign in</button>
+      </form>
+      <p class="muted" style="font-size:12px;margin-top:16px">
+        Default credentials come from your <span class="mono">.env</span> (ADMIN_USERNAME / ADMIN_PASSWORD).
+      </p>
+    </div>
+  </div>
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const f = e.target;
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: f.username.value, password: f.password.value }),
+      });
+      if (res.ok) location.href = '/';
+      else document.getElementById('err').textContent = 'Invalid credentials';
+    });
+  </script>
+</body>
+</html>
