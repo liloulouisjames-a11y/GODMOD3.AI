@@ -155,21 +155,38 @@ const MODELS=[
 MODELS.forEach(m=>m.price=Math.round(m.usd*FX*MARGIN));
 
 function art(i){
-  const skies=[["#8FD8F0","#F7E9C4"],["#BFE3C8","#EAF3D9"],["#A8D8E8","#EFF4DE"],["#1B2E4A","#7A5A6E"]];
+  const skies=[["#0B1626","#4A2E38","#8A4A3A"],["#04090F","#0B1B14","#12261B"],["#070E1A","#1A2433","#3A3A40"],["#050B14","#132B36","#27423E"]];
   const s=skies[i%4];
-  return `<svg viewBox="0 0 800 420" xmlns="http://www.w3.org/2000/svg">
-   <defs><linearGradient id="cs${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${s[0]}"/><stop offset="1" stop-color="${s[1]}"/></linearGradient>
-   <linearGradient id="cg${i}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFE9B8"/><stop offset="1" stop-color="#C98F35"/></linearGradient></defs>
+  const stars=Array.from({length:26},(_,k)=>`<circle cx="${(k*151)%800}" cy="${(k*83)%150+8}" r="${k%4?0.9:1.5}" fill="#EFEAE0" opacity="${.25+(k%5)*.12}"/>`).join("");
+  return `<svg viewBox="0 0 800 420" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+   <defs>
+    <linearGradient id="cs${i}" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="420"><stop offset="0" stop-color="${s[0]}"/><stop offset=".7" stop-color="${s[1]}"/><stop offset="1" stop-color="${s[2]}"/></linearGradient>
+    <linearGradient id="cb${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9E7DC"/><stop offset=".38" stop-color="#B4B7AC"/><stop offset=".72" stop-color="#6E766C"/><stop offset="1" stop-color="#3C443C"/></linearGradient>
+    <linearGradient id="cg${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFEFC2"/><stop offset=".5" stop-color="#F0B85C"/><stop offset="1" stop-color="#A8701F"/></linearGradient>
+    <radialGradient id="cspill${i}" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#F5B961" stop-opacity=".5"/><stop offset="1" stop-color="#F5B961" stop-opacity="0"/></radialGradient>
+    <filter id="cbloom${i}" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="15"/></filter>
+   </defs>
    <rect width="800" height="420" fill="url(#cs${i})"/>
-   <rect y="330" width="800" height="90" fill="#4C7C48" opacity=".7"/>
-   <ellipse cx="400" cy="348" rx="240" ry="14" fill="#000" opacity=".16"/>
-   <rect x="320" y="322" width="12" height="24" rx="3" fill="#5B6660"/><rect x="480" y="322" width="12" height="24" rx="3" fill="#5B6660"/>
-   <rect x="250" y="120" width="290" height="212" rx="72" fill="#EDEEE9" stroke="#B9BDB6" stroke-width="2.5"/>
-   <path d="M 512 130 Q 606 142 606 226 Q 606 310 512 322 Z" fill="#EDEEE9" stroke="#B9BDB6" stroke-width="2.5"/>
-   <path d="M 522 152 Q 590 164 590 226 Q 590 288 522 300 Z" fill="url(#cg${i})" stroke="#8A6A2E" stroke-width="1.5"/>
-   <rect x="280" y="156" width="118" height="140" rx="18" fill="url(#cg${i})" opacity=".92" stroke="#8A6A2E" stroke-width="1.5"/>
-   <rect x="416" y="156" width="52" height="140" rx="10" fill="#39423E"/>
-   <rect x="270" y="102" width="200" height="13" rx="3" fill="#16283C"/>
+   ${stars}
+   <circle cx="654" cy="64" r="24" fill="#F2EDDC" opacity=".92"/><circle cx="646" cy="58" r="21" fill="url(#cs${i})"/>
+   <rect y="330" width="800" height="90" fill="#0B150E"/>
+   <ellipse cx="400" cy="342" rx="230" ry="12" fill="#000" opacity=".5"/>
+   <ellipse cx="400" cy="340" rx="250" ry="28" fill="url(#cspill${i})" opacity=".5"/>
+   <rect x="320" y="316" width="11" height="22" rx="3" fill="#10130F"/><rect x="478" y="316" width="11" height="22" rx="3" fill="#10130F"/>
+   <g filter="url(#cbloom${i})" opacity=".85">
+     <rect x="282" y="176" width="112" height="94" rx="14" fill="#F5B961"/>
+     <path d="M 486 148 Q 576 161 576 225 Q 576 289 486 302 Z" fill="#F5B961"/>
+   </g>
+   <rect x="252" y="148" width="262" height="152" rx="63" fill="url(#cb${i})"/>
+   <path d="M 484 144 Q 578 158 578 224 Q 578 290 484 304 Z" fill="url(#cb${i})"/>
+   <path d="M 300 151 Q 400 144 500 151" stroke="#FBF7EA" stroke-width="2.2" fill="none" opacity=".5" stroke-linecap="round"/>
+   <path d="M 492 162 Q 562 176 562 224 Q 562 272 492 286 Z" fill="url(#cg${i})"/>
+   <rect x="282" y="176" width="112" height="94" rx="14" fill="url(#cg${i})"/>
+   <rect x="282" y="176" width="112" height="94" rx="14" fill="none" stroke="#3A3428" stroke-width="1.4" opacity=".7"/>
+   <line x1="338" y1="176" x2="338" y2="270" stroke="#3A3428" stroke-width="1.4" opacity=".7"/>
+   <rect x="410" y="174" width="48" height="126" rx="9" fill="#141A15"/>
+   <circle cx="449" cy="238" r="2.6" fill="#EDBE66"/>
+   <rect x="300" y="136" width="180" height="11" rx="2.5" fill="#0E1826"/>
   </svg>`;
 }
 
