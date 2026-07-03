@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Green Eco Solar — Capsule Houses & Off-Grid Living, Mauritius</title>
+<meta name="description" content="Premium capsule houses in Mauritius. Explore 8 signature designs, pull one apart layer by layer, simulate your bank financing, and go fully off-grid with solar. From ₨1.57M." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+/* ============================================================
+   GREEN ECO SOLAR — design system
+   Palette: Forest (deep green + bone + single amber accent)
+   Type: Outfit (display+body) / Space Grotesk (numerals, data)
+   Radius rule: cards 18px, inputs 10px, buttons pill
+   ============================================================ */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#F7F6F1;
+  --bg-deep:#EFEDE5;
+  --ink:#10201A;
+  --ink-soft:#4C5B54;
+  --green-950:#0A241C;
+  --green-900:#0E3226;
+  --green-700:#155941;
+  --green-500:#1E7A5A;
+  --green-100:#DDE9E1;
+  --amber:#DFA23C;
+  --amber-deep:#C4882A;
+  --line:#DFDCD1;
+  --card:#FFFFFF;
+  --shadow:0 18px 44px rgba(14,50,38,.13);
+  --shadow-sm:0 6px 18px rgba(14,50,38,.08);
+  --font:'Outfit',system-ui,sans-serif;
+  --mono:'Space Grotesk',monospace;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.6;overflow-x:hidden}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font-family:var(--font);cursor:pointer}
+.wrap{max-width:1240px;margin:0 auto;padding:0 24px}
+section{padding:96px 0}
+h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.08}
+.kicker{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--green-700);margin-bottom:18px}
+.kicker::before{content:"";width:26px;height:2px;background:var(--amber)}
+.h2{font-size:clamp(32px,4.6vw,54px);margin-bottom:16px}
+.lede{color:var(--ink-soft);font-size:17px;max-width:56ch}
+.num{font-family:var(--mono)}
+
+/* ---------- nav ---------- */
+nav{position:fixed;inset:0 0 auto 0;z-index:100;background:rgba(247,246,241,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);transition:.3s}
+.nav-in{max-width:1240px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;letter-spacing:-.01em}
+.brand .mark{width:34px;height:34px;border-radius:50%;background:conic-gradient(from 210deg,var(--green-700),var(--green-500) 55%,var(--amber) 75%,var(--green-700));display:grid;place-items:center;color:#fff;font-size:15px;font-weight:800}
+.brand small{display:block;font-size:10px;font-weight:600;letter-spacing:.18em;color:var(--green-700);text-transform:uppercase}
+.nav-links{display:flex;gap:26px;font-size:14px;font-weight:600}
+.nav-links a{opacity:.75}
+.nav-links a:hover{opacity:1;color:var(--green-700)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:999px;font-weight:700;font-size:14px;padding:13px 26px;transition:.25s}
+.btn-green{background:var(--green-900);color:#fff}
+.btn-green:hover{background:var(--green-700);transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+.btn-amber{background:var(--amber);color:var(--green-950)}
+.btn-amber:hover{background:var(--amber-deep);transform:translateY(-2px)}
+.btn-ghost{background:transparent;border:1.5px solid var(--green-900);color:var(--green-900)}
+.btn-ghost:hover{background:var(--green-900);color:#fff}
+@media(max-width:900px){.nav-links{display:none}}
+
+/* ---------- hero ---------- */
+.hero{min-height:100dvh;display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:40px;max-width:1240px;margin:0 auto;padding:130px 24px 60px}
+.hero h1{font-size:clamp(40px,5.6vw,76px);margin:0 0 22px}
+.hero h1 em{font-style:italic;color:var(--green-700)}
+.hero .lede{margin-bottom:34px}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:48px}
+.hero-stats{display:flex;gap:0;border-top:1px solid var(--line)}
+.hero-stats div{padding:18px 28px 0 0;margin-right:28px;border-right:1px solid var(--line)}
+.hero-stats div:last-child{border-right:none}
+.hero-stats b{font-family:var(--mono);font-size:26px;color:var(--green-900);display:block}
+.hero-stats span{font-size:12.5px;color:var(--ink-soft)}
+.hero-art{position:relative}
+.hero-art .frame{border-radius:22px;overflow:hidden;box-shadow:var(--shadow)}
+.hero-art .chip{position:absolute;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 16px;font-size:12.5px;font-weight:600;box-shadow:var(--shadow-sm)}
+.chip .num{color:var(--green-700);font-size:15px}
+@media(max-width:960px){.hero{grid-template-columns:1fr;padding-top:110px}.hero-stats div{padding-right:16px;margin-right:16px}}
+
+/* ---------- trust strip ---------- */
+.strip{background:var(--green-950);color:#DDE9E1;padding:14px 0;font-size:13px;overflow:hidden;white-space:nowrap}
+.strip .in{display:inline-block;animation:marq 30s linear infinite}
+.strip span{margin:0 34px;letter-spacing:.06em}
+.strip b{color:var(--amber)}
+@keyframes marq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ---------- gallery ---------- */
+.gal-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:22px;margin-top:52px}
+.gal-card{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:var(--shadow-sm);transition:.35s;display:flex;flex-direction:column}
+.gal-card:hover{transform:translateY(-8px);box-shadow:var(--shadow)}
+.gal-card.w6{grid-column:span 6}
+.gal-card.w4{grid-column:span 4}
+.gal-art{aspect-ratio:8/5;overflow:hidden}
+.gal-art svg{width:100%;height:100%;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.gal-card:hover .gal-art svg{transform:scale(1.045)}
+.gal-body{padding:20px 22px 22px;display:flex;flex-direction:column;gap:8px;flex:1}
+.gal-body h3{font-size:19px}
+.gal-body p{font-size:14px;color:var(--ink-soft);flex:1}
+.gal-meta{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding-top:12px;border-top:1px solid var(--line)}
+.gal-meta a{font-weight:700;color:var(--green-700)}
+.gal-meta a:hover{color:var(--amber-deep)}
+@media(max-width:900px){.gal-card.w6,.gal-card.w4{grid-column:span 12}}
+
+/* ---------- models / catalog ---------- */
+#models{background:var(--bg-deep)}
+.model-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:52px}
+.model-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px;display:flex;flex-direction:column;gap:14px;position:relative;transition:.3s}
+.model-card:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+.model-card .tag{position:absolute;top:18px;right:18px;background:var(--green-100);color:var(--green-900);font-size:11px;font-weight:800;letter-spacing:.08em;padding:5px 11px;border-radius:999px;text-transform:uppercase}
+.model-card .tag.gold{background:var(--amber);color:var(--green-950)}
+.model-card h3{font-size:22px}
+.model-card .sub{font-size:13px;color:var(--ink-soft);margin-top:-8px}
+.spec{font-size:13px;display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed var(--line)}
+.spec b{font-family:var(--mono);color:var(--green-900);font-weight:500}
+.price{margin-top:auto}
+.price small{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-soft)}
+.price .p{font-family:var(--mono);font-size:26px;font-weight:700;color:var(--green-900)}
+.price .mo{font-size:12.5px;color:var(--green-700);font-weight:600}
+.model-card .btn{width:100%;padding:12px}
+@media(max-width:1080px){.model-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.model-grid{grid-template-columns:1fr}}
+.compare-note{margin-top:26px;font-size:13.5px;color:var(--ink-soft);display:flex;gap:18px;flex-wrap:wrap}
+.compare-note b{color:var(--green-900)}
+
+/* ---------- exploded ---------- */
+#exploded{background:var(--green-950);color:#EDF3EE}
+#exploded .kicker{color:var(--amber)}
+#exploded .lede{color:#B9C9BF}
+.xp-wrap{display:grid;grid-template-columns:1fr 340px;gap:44px;align-items:center;margin-top:40px}
+.xp-stage{background:radial-gradient(120% 120% at 50% 0%,#123528 0%,#0A241C 65%);border:1px solid #1C4232;border-radius:22px;padding:10px;overflow:hidden}
+.xp-side h3{font-size:22px;margin-bottom:10px;color:#fff}
+.xp-side p{font-size:14.5px;color:#B9C9BF;margin-bottom:24px}
+.xp-slider{width:100%;appearance:none;height:6px;border-radius:99px;background:#1C4232;outline:none;margin:6px 0 22px}
+.xp-slider::-webkit-slider-thumb{appearance:none;width:26px;height:26px;border-radius:50%;background:var(--amber);border:4px solid var(--green-950);box-shadow:0 0 0 2px var(--amber);cursor:grab}
+.xp-legend{display:flex;flex-direction:column;gap:10px}
+.xp-legend .row{display:flex;gap:12px;align-items:center;padding:11px 14px;border:1px solid #1C4232;border-radius:12px;font-size:13.5px;background:rgba(255,255,255,.03);transition:.3s;opacity:.55}
+.xp-legend .row.on{opacity:1;border-color:var(--amber);background:rgba(223,162,60,.07)}
+.xp-legend .dot{width:10px;height:10px;border-radius:3px;flex:none}
+.xp-btns{display:flex;gap:10px;margin-top:22px}
+@media(max-width:960px){.xp-wrap{grid-template-columns:1fr}}
+
+/* ---------- solar cross-sell ---------- */
+#solar .solar-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;margin-top:20px}
+.solar-panel-list{display:flex;flex-direction:column;gap:14px;margin-top:26px}
+.solar-pack{display:flex;align-items:center;gap:16px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px;transition:.25s}
+.solar-pack:hover{border-color:var(--green-500);box-shadow:var(--shadow-sm)}
+.solar-pack .ic{width:46px;height:46px;border-radius:12px;background:var(--green-100);display:grid;place-items:center;flex:none}
+.solar-pack h4{font-size:15.5px}
+.solar-pack p{font-size:13px;color:var(--ink-soft)}
+.solar-pack .pp{margin-left:auto;text-align:right}
+.solar-pack .pp b{font-family:var(--mono);color:var(--green-900);font-size:16px;white-space:nowrap}
+.solar-pack .pp span{display:block;font-size:11.5px;color:var(--green-700);font-weight:600}
+.gesmu-card{background:linear-gradient(150deg,var(--green-900),var(--green-700));border-radius:22px;color:#fff;padding:40px;box-shadow:var(--shadow)}
+.gesmu-card h3{font-size:26px;margin-bottom:12px}
+.gesmu-card p{font-size:14.5px;color:#CFE0D5;margin-bottom:24px}
+.gesmu-card .row{display:flex;gap:10px;font-size:14px;padding:9px 0;border-top:1px solid rgba(255,255,255,.14);align-items:baseline}
+.gesmu-card .row b{color:var(--amber);font-family:var(--mono);min-width:64px}
+@media(max-width:960px){#solar .solar-grid{grid-template-columns:1fr}}
+
+/* ---------- financing simulator ---------- */
+#finance{background:var(--bg-deep)}
+.sim{display:grid;grid-template-columns:1.05fr .95fr;gap:26px;margin-top:48px}
+.sim-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:30px}
+.sim-card h3{font-size:18px;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.sim-card h3 .step{width:26px;height:26px;border-radius:50%;background:var(--green-900);color:#fff;font-size:13px;display:grid;place-items:center;font-family:var(--mono)}
+.f-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-soft);margin:18px 0 8px}
+.seg{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.seg.four{grid-template-columns:repeat(4,1fr)}
+.seg button{border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:10px 8px;font-size:13px;font-weight:600;transition:.2s;color:var(--ink-soft)}
+.seg button.on{border-color:var(--green-700);background:var(--green-100);color:var(--green-900)}
+select,.sim input[type=number]{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:12px 14px;font-family:var(--font);font-size:14px;background:#fff;color:var(--ink)}
+.rng{width:100%;appearance:none;height:6px;border-radius:99px;background:var(--line);outline:none;margin:10px 0 4px}
+.rng::-webkit-slider-thumb{appearance:none;width:22px;height:22px;border-radius:50%;background:var(--green-700);border:3px solid #fff;box-shadow:0 1px 6px rgba(0,0,0,.25);cursor:grab}
+.rng-val{display:flex;justify-content:space-between;font-size:13px;color:var(--ink-soft)}
+.rng-val b{font-family:var(--mono);color:var(--green-900)}
+.bank-list{display:flex;flex-direction:column;gap:10px}
+.bank{display:flex;align-items:center;gap:14px;border:1.5px solid var(--line);border-radius:12px;padding:13px 16px;cursor:pointer;transition:.2s;background:#fff}
+.bank:hover{border-color:var(--green-500)}
+.bank.on{border-color:var(--green-700);background:var(--green-100)}
+.bank .logo{width:38px;height:38px;border-radius:9px;display:grid;place-items:center;color:#fff;font-weight:800;font-size:13px;flex:none}
+.bank h4{font-size:14.5px}
+.bank p{font-size:12px;color:var(--ink-soft)}
+.bank .rate{margin-left:auto;font-family:var(--mono);font-weight:700;font-size:17px;color:var(--green-900);white-space:nowrap}
+.bank .rate small{font-size:11px;color:var(--ink-soft);font-weight:400;display:block;text-align:right}
+.result{background:var(--green-950);color:#fff;border-radius:18px;padding:30px;position:sticky;top:96px}
+.result h3{font-size:16px;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);margin-bottom:22px}
+.result .big{font-family:var(--mono);font-size:44px;font-weight:700;line-height:1;margin-bottom:4px}
+.result .big small{font-size:16px;color:#9FB8AA;font-weight:400}
+.result .sub{font-size:13px;color:#9FB8AA;margin-bottom:22px}
+.r-row{display:flex;justify-content:space-between;font-size:14px;padding:10px 0;border-top:1px solid rgba(255,255,255,.13)}
+.r-row b{font-family:var(--mono);font-weight:500}
+.r-row.hl b{color:var(--amber)}
+.r-note{font-size:11.5px;color:#7E9A8B;margin-top:18px;line-height:1.55}
+.result .btn{width:100%;margin-top:20px}
+.cmp-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:14px}
+.cmp-table th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);padding:8px 6px;border-bottom:1.5px solid var(--line)}
+.cmp-table td{padding:9px 6px;border-bottom:1px solid var(--line);font-family:var(--mono)}
+.cmp-table td:first-child{font-family:var(--font);font-weight:600}
+.cmp-table tr.best td{color:var(--green-700);font-weight:700}
+@media(max-width:960px){.sim{grid-template-columns:1fr}.result{position:static}}
+
+/* ---------- portfolio ---------- */
+.pf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
+.pf-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:30px;text-align:left;transition:.3s;position:relative;overflow:hidden}
+.pf-card.hl{background:var(--green-900);color:#fff;border-color:var(--green-900)}
+.pf-card.hl .pf-sub,.pf-card.hl .pf-line span{color:#AFC6B8}
+.pf-card:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+.pf-card .badge{position:absolute;top:0;right:0;background:var(--amber);color:var(--green-950);font-size:11px;font-weight:800;padding:6px 14px;border-radius:0 0 0 12px;letter-spacing:.06em}
+.pf-card h3{font-size:20px;margin-bottom:4px}
+.pf-sub{font-size:13px;color:var(--ink-soft);margin-bottom:18px}
+.pf-num{font-family:var(--mono);font-size:34px;font-weight:700;color:var(--amber);margin-bottom:16px}
+.pf-card:not(.hl) .pf-num{color:var(--green-700)}
+.pf-line{display:flex;justify-content:space-between;font-size:13.5px;padding:8px 0;border-top:1px dashed rgba(128,140,130,.35)}
+.pf-line b{font-family:var(--mono);font-weight:500}
+@media(max-width:960px){.pf-grid{grid-template-columns:1fr}}
+
+/* ---------- testimonials ---------- */
+#stories{background:var(--bg-deep)}
+.t-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
+.t-card{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--amber);border-radius:14px;padding:28px}
+.t-card .stars{color:var(--amber);letter-spacing:3px;margin-bottom:12px}
+.t-card p{font-size:14.5px;margin-bottom:18px}
+.t-card b{color:var(--green-900);font-size:14px}
+.t-card span{display:block;font-size:12px;color:var(--ink-soft)}
+@media(max-width:900px){.t-grid{grid-template-columns:1fr}}
+
+/* ---------- contact ---------- */
+#contact{background:var(--green-950);color:#fff}
+#contact .kicker{color:var(--amber)}
+#contact .lede{color:#B9C9BF}
+.c-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;margin-top:44px}
+.c-form{display:flex;flex-direction:column;gap:14px}
+.c-form label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#9FB8AA}
+.c-form input,.c-form select,.c-form textarea{width:100%;border:1.5px solid #1C4232;background:rgba(255,255,255,.05);border-radius:10px;padding:13px 15px;font-family:var(--font);font-size:14px;color:#fff}
+.c-form input::placeholder,.c-form textarea::placeholder{color:#6E8A7B}
+.c-form select{color:#fff}.c-form select option{color:var(--ink)}
+.c-side .row{display:flex;gap:16px;align-items:flex-start;padding:20px 0;border-bottom:1px solid #1C4232}
+.c-side .ic{width:44px;height:44px;border-radius:12px;background:rgba(223,162,60,.14);color:var(--amber);display:grid;place-items:center;flex:none;font-weight:800}
+.c-side h4{font-size:15px}.c-side p{font-size:13.5px;color:#9FB8AA}
+.c-side a{color:var(--amber);font-weight:700}
+@media(max-width:900px){.c-grid{grid-template-columns:1fr}}
+
+/* ---------- footer ---------- */
+footer{background:#071A13;color:#8FA79A;padding:44px 0;font-size:13px}
+footer .in{max-width:1240px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+footer b{color:#fff}
+
+/* ---------- reveal ---------- */
+.rv{opacity:0;transform:translateY(26px);transition:.7s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+
+/* ---------- whatsapp fab ---------- */
+.fab{position:fixed;right:22px;bottom:22px;z-index:90;background:#1FAF63;color:#fff;border-radius:999px;padding:14px 22px;font-weight:700;font-size:14px;display:flex;gap:10px;align-items:center;box-shadow:0 12px 30px rgba(0,0,0,.28);transition:.25s}
+.fab:hover{transform:translateY(-3px) scale(1.03)}
+</style>
+</head>
+<body>
+
+<!-- ================= NAV ================= -->
+<nav>
+  <div class="nav-in">
+    <a class="brand" href="#top">
+      <span class="mark">G</span>
+      <span>Green Eco Solar<small>Capsule House Division</small></span>
+    </a>
+    <div class="nav-links">
+      <a href="#designs">Designs</a>
+      <a href="#models">Models & Pricing</a>
+      <a href="#exploded">Inside the Capsule</a>
+      <a href="#solar">Go Off-Grid</a>
+      <a href="#finance">Financing</a>
+      <a href="#portfolio">Own Several</a>
+    </div>
+    <a class="btn btn-amber" href="#finance">Simulate My Loan</a>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header class="hero" id="top">
+  <div>
+    <div class="kicker">Mauritius · Premium Modular Living</div>
+    <h1>A house you choose like a car. <em>Delivered like magic.</em></h1>
+    <p class="lede">Factory-built capsule houses with hotel-grade interiors, cyclone-rated shells and solar-ready roofs. Pick a design, pull it apart layer by layer, simulate your bank loan — and see why most owners come back for a second one.</p>
+    <div class="hero-ctas">
+      <a class="btn btn-green" href="#designs">Explore the 8 Designs</a>
+      <a class="btn btn-ghost" href="#exploded">See Inside a Capsule</a>
+    </div>
+    <div class="hero-stats">
+      <div><b class="num">4</b><span>Models, from ₨1.57M</span></div>
+      <div><b class="num">5&nbsp;mo</b><span>Order to move-in</span></div>
+      <div><b class="num">12–18%</b><span>Rental yield potential*</span></div>
+      <div><b class="num">100%</b><span>Off-grid capable</span></div>
+    </div>
+  </div>
+  <div class="hero-art rv in">
+    <div class="frame" id="heroArt"></div>
+    <div class="chip" style="top:8%;left:-14px"><span class="num">150 km/h</span> · cyclone-rated shell</div>
+    <div class="chip" style="bottom:12%;right:-10px">Solar-ready roof · <span class="num">80%</span> energy savings</div>
+  </div>
+</header>
+
+<!-- ================= TRUST STRIP ================= -->
+<div class="strip"><div class="in" id="strip">
+  <span>ISO 9001 MANUFACTURING</span><span><b>●</b></span><span>DOUBLE-GLAZED TEMPERED GLASS</span><span><b>●</b></span><span>ALUMINIUM-ZINC SHELL</span><span><b>●</b></span><span>SMART LOCKS & LED SYSTEMS</span><span><b>●</b></span><span>DELIVERED & INSTALLED ISLAND-WIDE</span><span><b>●</b></span><span>FINANCING WITH 5 MAURITIAN BANKS</span><span><b>●</b></span>
+</div></div>
+
+<!-- ================= DESIGNS GALLERY ================= -->
+<section id="designs">
+  <div class="wrap">
+    <div class="kicker rv">The Collection</div>
+    <h2 class="h2 rv">Eight settings. One obsession.</h2>
+    <p class="lede rv">Every capsule is the same engineering underneath — where you put it changes everything. These are the eight signature placements our owners build. Warning: nobody stops at one.</p>
+    <div class="gal-grid" id="gallery"></div>
+  </div>
+</section>
+
+<!-- ================= MODELS ================= -->
+<section id="models">
+  <div class="wrap">
+    <div class="kicker rv">Models & Pricing</div>
+    <h2 class="h2 rv">Choose your capsule</h2>
+    <p class="lede rv">Transparent pricing, delivered to Mauritius. Every model includes the full premium interior: semi-intelligent toilet, smart entry lock, magnetic track lighting, blackout system and three-in-one rain shower.</p>
+    <div class="model-grid" id="modelGrid"></div>
+    <div class="compare-note rv">
+      <span><b>Bundle pricing:</b> 2 units −10% · 3+ units −15% (see <a href="#portfolio" style="color:var(--green-700);font-weight:700">Own Several</a>)</span>
+      <span><b>Included free this month:</b> site assessment · solar energy analysis · 3D visualisation on your land</span>
+      <span><b>Full spec sheets:</b> <a href="catalog.html" style="color:var(--green-700);font-weight:700">open the catalogue →</a></span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EXPLODED VIEW ================= -->
+<section id="exploded">
+  <div class="wrap">
+    <div class="kicker rv">Engineering, exposed</div>
+    <h2 class="h2 rv" style="color:#fff">Pull it apart. Layer by layer.</h2>
+    <p class="lede rv">Drag the slider to explode the capsule and see exactly what ₨1.57M buys — from the aircraft-grade shell to the adjustable steel feet. Nothing to hide.</p>
+    <div class="xp-wrap">
+      <div class="xp-stage rv"><div id="xpArt"></div></div>
+      <div class="xp-side rv">
+        <h3>Anatomy of a capsule</h3>
+        <p>Move the slider — each layer lights up as it separates.</p>
+        <input type="range" min="0" max="100" value="0" class="xp-slider" id="xpSlider" aria-label="Exploded view control">
+        <div class="xp-legend" id="xpLegend"></div>
+        <div class="xp-btns">
+          <button class="btn btn-amber" id="xpPlay">▶ Auto-explode</button>
+          <a class="btn btn-ghost" style="border-color:#3C6A54;color:#DDE9E1" href="catalog.html">Full specs</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SOLAR CROSS-SELL ================= -->
+<section id="solar">
+  <div class="wrap">
+    <div class="kicker rv">Powered by the sun</div>
+    <h2 class="h2 rv">Cut the cable. Go fully off-grid.</h2>
+    <p class="lede rv">Every capsule roof is pre-engineered for solar. Pair your house with a solar + battery package from our partner <b>GESMU</b> and your electricity bill simply… stops existing.</p>
+    <div class="solar-grid">
+      <div class="rv">
+        <div class="solar-panel-list" id="solarPacks"></div>
+        <p style="font-size:12.5px;color:var(--ink-soft);margin-top:14px">Packages are indicative and sized for capsule loads (AC, lighting, appliances, EV-trickle). Final sizing after your free solar analysis. Add any package to your loan in the <a href="#finance" style="color:var(--green-700);font-weight:700">simulator below</a>.</p>
+      </div>
+      <div class="gesmu-card rv">
+        <h3>GESMU · Solar & Off-Grid Partner</h3>
+        <p>Panels, hybrid inverters, lithium storage and installation — one team, one warranty, one WhatsApp thread. Explore the full solar range on their site, then let us bundle it into a single monthly payment.</p>
+        <div class="row"><b>80%+</b><span>typical grid-energy reduction with the Starter pack</span></div>
+        <div class="row"><b>100%</b><span>independence with the Full Off-Grid pack + rainwater option</span></div>
+        <div class="row"><b>25 yr</b><span>panel performance warranty</span></div>
+        <a class="btn btn-amber" style="margin-top:26px" href="https://gesmu.edgeone.app/" target="_blank" rel="noopener">Visit GESMU Solar ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FINANCING SIMULATOR ================= -->
+<section id="finance">
+  <div class="wrap">
+    <div class="kicker rv">Financing Simulator</div>
+    <h2 class="h2 rv">Know your monthly payment in 30 seconds</h2>
+    <p class="lede rv">Pick your capsule, add solar, choose your bank and deposit — and watch your real monthly cost update live. Then send yourself the quote on WhatsApp.</p>
+    <div class="sim">
+      <div>
+        <div class="sim-card rv">
+          <h3><span class="step">1</span> Build your package</h3>
+          <div class="f-label">Capsule model</div>
+          <div class="seg four" id="simModels"></div>
+          <div class="f-label">How many units?</div>
+          <div class="seg four" id="simQty"></div>
+          <div class="f-label">Solar package (via GESMU)</div>
+          <div class="seg" id="simSolar" style="grid-template-columns:repeat(2,1fr)"></div>
+        </div>
+        <div class="sim-card rv" style="margin-top:22px">
+          <h3><span class="step">2</span> Choose your bank</h3>
+          <div class="bank-list" id="bankList"></div>
+          <div class="f-label" style="margin-top:22px">Deposit — <b class="num" id="depLabel">20%</b></div>
+          <input type="range" class="rng" id="depSlider" min="10" max="50" value="20">
+          <div class="rng-val"><span>10%</span><span>50%</span></div>
+          <div class="f-label" style="margin-top:18px">Loan term — <b class="num" id="termLabel">15 years</b></div>
+          <input type="range" class="rng" id="termSlider" min="5" max="25" value="15">
+          <div class="rng-val"><span>5 yrs</span><span>25 yrs</span></div>
+        </div>
+        <div class="sim-card rv" style="margin-top:22px">
+          <h3><span class="step">3</span> Compare all banks</h3>
+          <table class="cmp-table"><thead><tr><th>Bank</th><th>Rate*</th><th>Monthly</th><th>Total interest</th></tr></thead><tbody id="cmpBody"></tbody></table>
+          <p style="font-size:11.5px;color:var(--ink-soft);margin-top:12px">*Indicative variable rates for secured green/housing loans, July 2026. Your final rate depends on profile and bank approval. We hand you to the bank — we are not a lender.</p>
+        </div>
+      </div>
+      <div class="result rv" id="resultCard">
+        <h3>Your simulation</h3>
+        <div class="big"><span id="rMonthly">—</span><small> /month</small></div>
+        <div class="sub" id="rSummary">—</div>
+        <div class="r-row"><span>Package price</span><b id="rPrice">—</b></div>
+        <div class="r-row" id="rBundleRow" style="display:none"><span>Bundle discount</span><b id="rBundle" style="color:#7ADCA8">—</b></div>
+        <div class="r-row"><span>Solar add-on</span><b id="rSolar">—</b></div>
+        <div class="r-row"><span>Deposit</span><b id="rDeposit">—</b></div>
+        <div class="r-row"><span>Amount financed</span><b id="rLoan">—</b></div>
+        <div class="r-row"><span>Total interest</span><b id="rInterest">—</b></div>
+        <div class="r-row hl"><span>Est. rental income*</span><b id="rRent">—</b></div>
+        <div class="r-row hl"><span>Net monthly cost</span><b id="rNet">—</b></div>
+        <button class="btn btn-amber" id="waQuote">Send this quote to WhatsApp</button>
+        <p class="r-note">*Rental estimate: conservative ₨3,500/night at 60% occupancy per unit, before costs. Net monthly = loan payment − rental income. Simulation is illustrative, not a credit offer.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PORTFOLIO / OWN SEVERAL ================= -->
+<section id="portfolio">
+  <div class="wrap">
+    <div class="kicker rv">Own several</div>
+    <h2 class="h2 rv">One is a home. Three is an income.</h2>
+    <p class="lede rv">Capsules stack into portfolios beautifully: shared land, shared solar, one cleaning team — and bundle pricing that rewards scale. Here's the math our repeat buyers ran.</p>
+    <div class="pf-grid" id="pfGrid"></div>
+    <p class="rv" style="margin-top:26px;font-size:13px;color:var(--ink-soft)">Projections use V5 Compact pricing, bundle discounts applied, ₨3,500/night at 60% occupancy, before operating costs (~15%). Illustrative only — ask us for a personalised investor deck.</p>
+  </div>
+</section>
+
+<!-- ================= TESTIMONIALS ================= -->
+<section id="stories">
+  <div class="wrap">
+    <div class="kicker rv">Owner stories</div>
+    <h2 class="h2 rv">They started with one…</h2>
+    <div class="t-grid">
+      <div class="t-card rv"><div class="stars">★★★★★</div><p>"Bought one V5 for weekends in Chamarel. Six months of Airbnb bookings later I ordered two more. The second one paid its own deposit."</p><b>Rajesh K.</b><span>Port Louis · 3 units owned</span></div>
+      <div class="t-card rv"><div class="stars">★★★★★</div><p>"The exploded view on this site is what sold my husband — he's an engineer. The GESMU solar pack means we haven't paid a CEB bill since March."</p><b>Maria S.</b><span>Trou aux Biches · fully off-grid</span></div>
+      <div class="t-card rv"><div class="stars">★★★★★</div><p>"I simulated my MCB loan on the website, sent the quote to WhatsApp, and had bank pre-approval in a week. Smoothest property purchase of my life."</p><b>Aditya P.</b><span>Curepipe · V7 Luxury</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact">
+  <div class="wrap">
+    <div class="kicker rv">Start today</div>
+    <h2 class="h2 rv" style="color:#fff">Your capsule is 5 months away</h2>
+    <p class="lede rv">Tell us what you're dreaming of — we reply on WhatsApp within 2 business hours with a personalised quote, financing options and available delivery slots.</p>
+    <div class="c-grid">
+      <form class="c-form rv" id="leadForm">
+        <div><label>Your name</label><input type="text" id="lfName" placeholder="e.g. Priya Ramgoolam" required></div>
+        <div><label>Interested in</label><select id="lfModel">
+          <option>V5 Compact</option><option>V5 Premium</option><option>V7 Spacious</option><option>V7 Luxury</option><option>Multiple units (investor)</option><option>Not sure yet — advise me</option>
+        </select></div>
+        <div><label>Intended use</label><select id="lfUse">
+          <option>Personal residence</option><option>Airbnb / rental investment</option><option>Both</option><option>Office / studio</option>
+        </select></div>
+        <div><label>District / location</label><input type="text" id="lfLoc" placeholder="e.g. Grand Baie, Rivière du Rempart"></div>
+        <div><label>Anything else?</label><textarea id="lfMsg" rows="3" placeholder="Timeline, budget, solar interest, land situation…"></textarea></div>
+        <button type="submit" class="btn btn-amber" style="margin-top:6px">Send via WhatsApp — instant</button>
+        <p style="font-size:11.5px;color:#7E9A8B">Opens WhatsApp with your message pre-written. No forms lost in spam folders — you talk to Louis directly.</p>
+      </form>
+      <div class="c-side rv">
+        <div class="row"><div class="ic">W</div><div><h4>WhatsApp / Phone</h4><p>Fastest — usually under 2 hours</p><a href="https://wa.me/23058800573" id="waDirect">+230 5880 0573</a></div></div>
+        <div class="row"><div class="ic">@</div><div><h4>Email</h4><p>Quotes, spec sheets & investor decks</p><a href="mailto:liloulouisjames@gmail.com">liloulouisjames@gmail.com</a></div></div>
+        <div class="row"><div class="ic">S</div><div><h4>Solar & off-grid</h4><p>Our partner for panels & batteries</p><a href="https://gesmu.edgeone.app/" target="_blank" rel="noopener">gesmu.edgeone.app ↗</a></div></div>
+        <div class="row"><div class="ic">✓</div><div><h4>This month's offer</h4><p>Free site assessment · free solar analysis · free 3D visualisation of your capsule on your land · flexible payment plans</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="in">
+    <div><b>Green Eco Solar</b> — Capsule House Division · Trou aux Biches, Mauritius<br>Renewable energy for a sustainable future.</div>
+    <div>© 2026 Green Eco Solar · <a href="catalog.html" style="color:var(--amber)">Catalogue</a> · <a href="https://gesmu.edgeone.app/" target="_blank" rel="noopener" style="color:var(--amber)">GESMU Solar</a></div>
+  </div>
+</footer>
+
+<a class="fab" id="fabWa" href="#" target="_blank" rel="noopener">💬 WhatsApp us</a>
+
+<script>
+/* ============================================================
+   DATA — single source of truth
+   Pricing = factory USD × 43 MUR/USD × 1.8 margin
+   ============================================================ */
+const FX = 43, MARGIN = 1.8, WA = "2305880 0573".replace(/\s/g,"");
+const MODELS = [
+  {id:"v5c", name:"V5 Compact",  ins:"8cm",  usd:20260, area:27.72, dims:"7.7 × 3.6 × 3.2 m", wt:"2.56 T", tag:"STARTER",  gold:false, for:"Singles & couples"},
+  {id:"v5p", name:"V5 Premium",  ins:"15cm", usd:26840, area:27.72, dims:"7.7 × 3.6 × 3.2 m", wt:"3.2 T",  tag:"BEST SELLER", gold:true,  for:"Premium couples"},
+  {id:"v7s", name:"V7 Spacious", ins:"8cm",  usd:24780, area:35.64, dims:"9.9 × 3.6 × 3.2 m", wt:"4.0 T",  tag:"FAMILY",   gold:false, for:"Small families"},
+  {id:"v7l", name:"V7 Luxury",   ins:"15cm", usd:33240, area:35.64, dims:"9.9 × 3.6 × 3.2 m", wt:"4.0 T",  tag:"FLAGSHIP", gold:true,  for:"Luxury living & rentals"}
+];
+MODELS.forEach(m => m.price = Math.round(m.usd * FX * MARGIN));
+const BANKS = [
+  {id:"mcb",  name:"MCB",       full:"Mauritius Commercial Bank", rate:6.15, color:"#B01E24", note:"Green home loan"},
+  {id:"sbm",  name:"SBM",       full:"SBM Bank Mauritius",        rate:5.90, color:"#00539C", note:"Eco housing scheme"},
+  {id:"mau",  name:"MB",        full:"MauBank",                   rate:5.75, color:"#0E7A3E", note:"Lowest indicative rate"},
+  {id:"absa", name:"ABSA",      full:"Absa Mauritius",            rate:6.35, color:"#DC0032", note:"Flexi home loan"},
+  {id:"bone", name:"B1",        full:"Bank One",                  rate:6.50, color:"#1A1A4E", note:"Investor-friendly"}
+];
+const SOLAR = [
+  {id:"none",    name:"No solar (grid power)",           kw:"—",            price:0,      save:""},
+  {id:"starter", name:"Starter — 3 kW + 5 kWh battery",  kw:"3 kW / 5 kWh", price:285000, save:"~80% bill reduction"},
+  {id:"offgrid", name:"Full Off-Grid — 5 kW + 10 kWh",   kw:"5 kW / 10 kWh",price:495000, save:"100% independence"},
+  {id:"resort",  name:"Resort — 8 kW + 15 kWh (2–3 units)", kw:"8 kW / 15 kWh", price:745000, save:"Powers 2–3 capsules"}
+];
+const bundleDisc = q => q>=3 ? .15 : q===2 ? .10 : 0;
+const fmt = n => "₨ " + Math.round(n).toLocaleString("en-US");
+const fmtK = n => n>=1e6 ? "₨ "+(n/1e6).toFixed(2)+"M" : "₨ "+Math.round(n/1000)+"K";
+
+/* ============================================================
+   VECTOR ART — capsule scene generator
+   ============================================================ */
+let GID = 0;
+function capsuleScene(o){
+  const g = ++GID;
+  const stars = o.night ? Array.from({length:26},(_,i)=>`<circle cx="${(i*137)%800}" cy="${(i*89)%210+10}" r="${i%3?1.1:1.8}" fill="#fff" opacity="${.4+(i%5)*.12}"/>`).join("") : "";
+  const sun = o.night
+    ? `<circle cx="655" cy="88" r="34" fill="#F2EBD8" opacity=".9"/><circle cx="643" cy="80" r="30" fill="${o.sky[0]}"/>`
+    : `<circle cx="650" cy="95" r="42" fill="#FFDF9E" opacity=".95"/><circle cx="650" cy="95" r="60" fill="#FFDF9E" opacity=".22"/>`;
+  const solar = o.solar ? `<g><rect x="255" y="142" width="200" height="14" rx="3" fill="#16283C"/><rect x="258" y="144" width="47" height="10" rx="1.5" fill="#2B4A6F"/><rect x="307" y="144" width="47" height="10" rx="1.5" fill="#2B4A6F"/><rect x="356" y="144" width="47" height="10" rx="1.5" fill="#2B4A6F"/><rect x="405" y="144" width="47" height="10" rx="1.5" fill="#2B4A6F"/></g>` : "";
+  return `
+  <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${o.title}">
+    <defs>
+      <linearGradient id="sky${g}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${o.sky[0]}"/><stop offset="1" stop-color="${o.sky[1]}"/></linearGradient>
+      <linearGradient id="bod${g}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FDFDFB"/><stop offset=".55" stop-color="#E9EAE6"/><stop offset="1" stop-color="#C9CCC6"/></linearGradient>
+      <linearGradient id="gls${g}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFE9B8"/><stop offset=".5" stop-color="#F7C863"/><stop offset="1" stop-color="#C98F35"/></linearGradient>
+      <linearGradient id="gnd${g}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${o.ground[0]}"/><stop offset="1" stop-color="${o.ground[1]}"/></linearGradient>
+    </defs>
+    <rect width="800" height="500" fill="url(#sky${g})"/>
+    ${stars}${sun}
+    ${o.backdrop||""}
+    <rect y="370" width="800" height="130" fill="url(#gnd${g})"/>
+    ${o.fore||""}
+    <ellipse cx="380" cy="392" rx="235" ry="16" fill="#000" opacity=".18"/>
+    <g>
+      <rect x="300" y="368" width="12" height="26" rx="3" fill="#5B6660"/>
+      <rect x="470" y="368" width="12" height="26" rx="3" fill="#5B6660"/>
+      <rect x="238" y="160" width="285" height="215" rx="72" fill="url(#bod${g})" stroke="#B9BDB6" stroke-width="2"/>
+      <path d="M 495 170 Q 588 182 588 267 Q 588 352 495 365 Z" fill="url(#bod${g})" stroke="#B9BDB6" stroke-width="2"/>
+      <path d="M 505 192 Q 572 204 572 267 Q 572 330 505 342 Z" fill="url(#gls${g})" stroke="#8A6A2E" stroke-width="1.5"/>
+      <rect x="268" y="196" width="120" height="142" rx="18" fill="url(#gls${g})" stroke="#8A6A2E" stroke-width="1.5" opacity=".92"/>
+      <line x1="328" y1="196" x2="328" y2="338" stroke="#8A6A2E" stroke-width="1.5" opacity=".6"/>
+      <rect x="404" y="196" width="52" height="142" rx="10" fill="#39423E"/>
+      <circle cx="446" cy="268" r="3.4" fill="${'#DFA23C'}"/>
+      <rect x="238" y="252" width="285" height="4" fill="#fff" opacity=".35"/>
+      ${solar}
+    </g>
+    ${o.extra||""}
+  </svg>`;
+}
+const palms = x => `<g transform="translate(${x},0)"><path d="M60 380 q6 -70 -4 -118" stroke="#4A5D3A" stroke-width="9" fill="none" stroke-linecap="round"/><g fill="#3E7C4F"><path d="M56 262 q-46 -18 -74 8 q40 -2 74 10 z"/><path d="M56 262 q-8 -46 24 -66 q-12 38 -6 68 z"/><path d="M56 262 q44 -24 76 -2 q-40 0 -74 14 z"/><path d="M56 262 q30 -36 12 -74 q4 40 -22 70 z"/></g></g>`;
+const mounts = `<path d="M0 370 L120 220 L230 370 Z" fill="#2E4A3C" opacity=".8"/><path d="M120 370 L290 180 L470 370 Z" fill="#1E3A2E" opacity=".65"/><path d="M420 370 L620 235 L800 370 Z" fill="#2E4A3C" opacity=".55"/>`;
+const pool = `<rect x="565" y="398" width="190" height="58" rx="10" fill="#59C2C9"/><rect x="565" y="398" width="190" height="58" rx="10" fill="url(#gls0)" opacity="0"/><rect x="572" y="404" width="176" height="46" rx="7" fill="#7ADCE0" opacity=".75"/><line x1="700" y1="398" x2="700" y2="430" stroke="#E8E8E4" stroke-width="4" stroke-linecap="round"/><line x1="716" y1="398" x2="716" y2="430" stroke="#E8E8E4" stroke-width="4" stroke-linecap="round"/>`;
+const SCENES = [
+  {w:"w6", title:"The Cliffhanger", loc:"Chamarel heights", d:"Cantilevered over the valley on twin steel columns, plunge pool below. The one from your feed — yes, you can own it.",
+   art:{title:"Capsule house cantilevered over cliff at dusk",night:true,solar:true,sky:["#1B2E4A","#7A5A6E"],ground:["#23392E","#101E17"],backdrop:mounts,fore:pool}},
+  {w:"w6", title:"The Lagoon Front", loc:"Trou aux Biches", d:"Thirty steps from turquoise water. The V7's panoramic glass nose points straight at the sunset — rental gold, ₨5K+ a night.",
+   art:{title:"Capsule house on a beach with palm trees",night:false,solar:true,sky:["#8FD8F0","#F7E9C4"],ground:["#EEDFB4","#D8C48E"],backdrop:`<rect y="330" width="800" height="46" fill="#37B6C9" opacity=".85"/><rect y="322" width="800" height="10" fill="#5ED4E2" opacity=".7"/>`,fore:palms(600)+palms(30)}},
+  {w:"w4", title:"The Forest Studio", loc:"Black River Gorges edge", d:"A writer's retreat wrapped in endemic forest. 15cm insulation keeps it silent inside.",
+   art:{title:"Capsule house in a forest clearing",night:false,solar:false,sky:["#BFE3C8","#EAF3D9"],ground:["#3E6B45","#27492E"],backdrop:`<g fill="#2E5B3C"><circle cx="80" cy="300" r="80"/><circle cx="180" cy="260" r="95"/><circle cx="690" cy="280" r="90"/><circle cx="760" cy="330" r="70"/></g><g fill="#3E7C4F"><circle cx="120" cy="330" r="70"/><circle cx="720" cy="340" r="75"/></g>`}},
+  {w:"w4", title:"The Sugar-Field Twin", loc:"Rivière du Rempart", d:"Two capsules, one deck, one solar array. The classic first investor move: live in one, rent the other.",
+   art:{title:"Two capsule houses side by side in cane fields",night:false,solar:true,sky:["#A8D8E8","#EFF4DE"],ground:["#7FA548","#5C7E33"],extra:`<g transform="translate(-52,186) scale(.52)" opacity=".95"><ellipse cx="380" cy="400" rx="200" ry="14" fill="#000" opacity=".15"/><rect x="300" y="368" width="12" height="26" rx="3" fill="#5B6660"/><rect x="470" y="368" width="12" height="26" rx="3" fill="#5B6660"/><rect x="238" y="160" width="285" height="215" rx="72" fill="#EDEEE9" stroke="#B9BDB6" stroke-width="3"/><rect x="268" y="196" width="120" height="142" rx="18" fill="#F7C863" opacity=".9"/><rect x="404" y="196" width="52" height="142" rx="10" fill="#39423E"/></g>`}},
+  {w:"w4", title:"The Rooftop Penthouse", loc:"Port Louis", d:"Drop a capsule on your existing flat roof. Crane day is one morning; the skyline view is forever.",
+   art:{title:"Capsule house installed on a city rooftop at night",night:true,solar:true,sky:["#14213A","#31456B"],ground:["#232A33","#14181E"],backdrop:`<g fill="#1C2836"><rect x="20" y="240" width="90" height="130"/><rect x="130" y="200" width="70" height="170"/><rect x="620" y="215" width="85" height="155"/><rect x="715" y="255" width="70" height="115"/></g><g fill="#F7C863" opacity=".8"><rect x="35" y="255" width="10" height="10"/><rect x="60" y="280" width="10" height="10"/><rect x="145" y="215" width="9" height="9"/><rect x="170" y="245" width="9" height="9"/><rect x="635" y="230" width="10" height="10"/><rect x="660" y="265" width="10" height="10"/><rect x="730" y="270" width="9" height="9"/></g>`}},
+  {w:"w6", title:"The Eco-Resort Row", loc:"Bel Ombre", d:"Five capsules, a shared pool and a GESMU solar farm: a boutique resort for the price of one villa. Ask for the investor deck.",
+   art:{title:"Row of capsule houses forming an eco resort",night:false,solar:true,sky:["#9ED2E8","#FBE8C9"],ground:["#5C8F5F","#3E6B45"],extra:`<g transform="translate(-140,192) scale(.5)" opacity=".95"><ellipse cx="380" cy="400" rx="200" ry="14" fill="#000" opacity=".15"/><rect x="300" y="368" width="12" height="26" rx="3" fill="#5B6660"/><rect x="470" y="368" width="12" height="26" rx="3" fill="#5B6660"/><rect x="238" y="160" width="285" height="215" rx="72" fill="#EDEEE9" stroke="#B9BDB6" stroke-width="3"/><rect x="268" y="196" width="120" height="142" rx="18" fill="#F7C863" opacity=".9"/><rect x="404" y="196" width="52" height="142" rx="10" fill="#39423E"/></g><g transform="translate(500,192) scale(.5)" opacity=".95"><ellipse cx="380" cy="400" rx="200" ry="14" fill="#000" opacity=".15"/><rect x="300" y="368" width="12" height="26" rx="3" fill="#5B6660"/><rect x="470" y="368" width="12" height="26" rx="3" fill="#5B6660"/><rect x="238" y="160" width="285" height="215" rx="72" fill="#EDEEE9" stroke="#B9BDB6" stroke-width="3"/><rect x="268" y="196" width="120" height="142" rx="18" fill="#F7C863" opacity=".9"/><rect x="404" y="196" width="52" height="142" rx="10" fill="#39423E"/></g>`}},
+  {w:"w6", title:"The Garden Office", loc:"Your back garden", d:"A 27m² soundproof studio 12 metres from your kitchen. Work, gym, guests — the most-used room you'll ever add.",
+   art:{title:"Capsule house as a garden office",night:false,solar:false,sky:["#C4E4EE","#F1F5E3"],ground:["#6EA262","#4C7C48"],backdrop:`<rect x="0" y="285" width="800" height="88" fill="#8FAE8C"/><g fill="#3E7C4F"><circle cx="720" cy="270" r="65"/><circle cx="60" cy="285" r="55"/></g><rect x="640" y="300" width="130" height="70" rx="6" fill="#D8D3C4"/><rect x="662" y="322" width="28" height="48" fill="#8A6A2E"/><rect x="700" y="322" width="24" height="20" fill="#F7C863" opacity=".8"/>`}},
+  {w:"w4", title:"The Stargazer", loc:"Plaine Champagne", d:"South-facing glass nose, zero light pollution, full off-grid pack. The Milky Way is the ceiling.",
+   art:{title:"Capsule house under a starry night sky",night:true,solar:true,sky:["#0B1430","#27355C"],ground:["#1B2A22","#0E1812"],backdrop:mounts}}
+];
+
+/* gallery render */
+document.getElementById("gallery").innerHTML = SCENES.map(s=>`
+  <div class="gal-card ${s.w} rv">
+    <div class="gal-art">${capsuleScene(s.art)}</div>
+    <div class="gal-body">
+      <h3>${s.title}</h3>
+      <p>${s.d}</p>
+      <div class="gal-meta"><span style="color:var(--ink-soft)">${s.loc}</span>
+      <a href="https://wa.me/${WA}?text=${encodeURIComponent("Hi Louis! I love “"+s.title+"” on greenlumens.com — can we talk about building it?")}" target="_blank" rel="noopener">I want this →</a></div>
+    </div>
+  </div>`).join("");
+
+/* hero art */
+document.getElementById("heroArt").innerHTML = capsuleScene(SCENES[0].art);
+
+/* models render */
+document.getElementById("modelGrid").innerHTML = MODELS.map(m=>{
+  const mo = pmt(m.price*.8, 5.75/1200, 180); // teaser: 20% dep, MauBank, 15y
+  return `
+  <div class="model-card rv">
+    <span class="tag ${m.gold?"gold":""}">${m.tag}</span>
+    <h3>${m.name}</h3>
+    <div class="sub">${m.ins} insulation · ${m.for}</div>
+    <div>
+      <div class="spec"><span>Living area</span><b>${m.area} m²</b></div>
+      <div class="spec"><span>Dimensions</span><b>${m.dims}</b></div>
+      <div class="spec"><span>Insulation</span><b>${m.ins} polyurethane</b></div>
+      <div class="spec"><span>Weight</span><b>${m.wt}</b></div>
+      <div class="spec"><span>Cyclone rating</span><b>150+ km/h</b></div>
+    </div>
+    <div class="price"><small>Delivered price</small><span class="p">${fmt(m.price)}</span><div class="mo">or ~${fmt(mo)}/mo financed</div></div>
+    <a class="btn btn-green" href="#finance" onclick="setSimModel('${m.id}')">Simulate financing</a>
+  </div>`;}).join("");
+
+/* ============================================================
+   EXPLODED VIEW
+   ============================================================ */
+const XP_LAYERS = [
+  {id:"shell",  name:"Aluminium-zinc shell", d:"Fluorocarbon-painted, cyclone-rated to 150+ km/h", color:"#E9EAE6", dy:-170},
+  {id:"insul",  name:"PU insulation 8–15cm", d:"Keeps 24°C inside at 33°C outside — 80% less AC", color:"#DFA23C", dy:-95},
+  {id:"glass",  name:"Double-glazed glass nose", d:"Tempered, UV-filtered panoramic front", color:"#F7C863", dy:-30},
+  {id:"inter",  name:"Smart interior module", d:"Bathroom pod, kitchenette, LED track, smart lock", color:"#7ADCA8", dy:35},
+  {id:"chass",  name:"Steel chassis & floor", d:"Galvanised frame, pre-wired & pre-plumbed", color:"#9FB8AA", dy:105},
+  {id:"feet",   name:"Adjustable foundations", d:"Set on uneven land — no concrete slab needed", color:"#5B6660", dy:170}
+];
+document.getElementById("xpArt").innerHTML = `
+<svg viewBox="0 -70 900 690" xmlns="http://www.w3.org/2000/svg" id="xpSvg" aria-label="Interactive exploded view of a capsule house">
+  <defs>
+    <linearGradient id="xbody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FDFDFB"/><stop offset="1" stop-color="#C9CCC6"/></linearGradient>
+    <linearGradient id="xglass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFE9B8"/><stop offset="1" stop-color="#C98F35"/></linearGradient>
+  </defs>
+  <g id="xp-feet"><rect x="330" y="330" width="16" height="34" rx="4" fill="#5B6660"/><rect x="540" y="330" width="16" height="34" rx="4" fill="#5B6660"/><rect x="312" y="362" width="52" height="10" rx="4" fill="#39423E"/><rect x="522" y="362" width="52" height="10" rx="4" fill="#39423E"/></g>
+  <g id="xp-chass"><rect x="280" y="300" width="330" height="26" rx="10" fill="#6E7B74"/><rect x="292" y="306" width="306" height="14" rx="6" fill="#4C5B54"/></g>
+  <g id="xp-inter"><rect x="300" y="230" width="290" height="66" rx="12" fill="#39423E"/><rect x="312" y="242" width="70" height="42" rx="6" fill="#7ADCA8" opacity=".85"/><rect x="392" y="242" width="90" height="42" rx="6" fill="#DDE9E1" opacity=".8"/><rect x="492" y="242" width="86" height="42" rx="6" fill="#9FB8AA" opacity=".7"/></g>
+  <g id="xp-glass"><path d="M 592 208 Q 650 222 650 268 Q 650 314 592 328 Z" fill="url(#xglass)" stroke="#8A6A2E" stroke-width="2"/><rect x="330" y="214" width="110" height="70" rx="12" fill="url(#xglass)" opacity=".9" stroke="#8A6A2E" stroke-width="1.5"/></g>
+  <g id="xp-insul"><rect x="272" y="152" width="330" height="120" rx="54" fill="none" stroke="#DFA23C" stroke-width="16" stroke-dasharray="2 7" stroke-linecap="round" opacity=".95"/></g>
+  <g id="xp-shell"><path d="M 262 268 Q 262 128 400 128 L 480 128 Q 640 128 648 268 L 262 268 Z" fill="url(#xbody)" stroke="#B9BDB6" stroke-width="2.5"/><rect x="320" y="120" width="200" height="12" rx="3" fill="#16283C"/></g>
+</svg>`;
+const xpSlider = document.getElementById("xpSlider");
+const xpLegend = document.getElementById("xpLegend");
+xpLegend.innerHTML = XP_LAYERS.map(l=>`<div class="row" data-l="${l.id}"><span class="dot" style="background:${l.color}"></span><div><b style="font-size:13.5px">${l.name}</b><div style="font-size:12px;opacity:.75">${l.d}</div></div></div>`).join("");
+function xpUpdate(){
+  const v = xpSlider.value/100;
+  XP_LAYERS.forEach((l,i)=>{
+    const el = document.getElementById("xp-"+l.id);
+    if(el) el.style.transform = `translateY(${l.dy*v}px)`;
+    el && (el.style.transition = "transform .15s linear");
+    const row = xpLegend.querySelector(`[data-l="${l.id}"]`);
+    row.classList.toggle("on", v > .12 + i*.13);
+  });
+}
+xpSlider.addEventListener("input", xpUpdate);
+let xpTimer=null;
+document.getElementById("xpPlay").addEventListener("click", ()=>{
+  clearInterval(xpTimer);
+  let v = 0, dir = 1;
+  xpTimer = setInterval(()=>{
+    v += dir*1.6;
+    if(v>=100){v=100;dir=-1}
+    if(v<=0 && dir<0){v=0;clearInterval(xpTimer)}
+    xpSlider.value = v; xpUpdate();
+  }, 24);
+});
+
+/* ============================================================
+   SOLAR PACKS
+   ============================================================ */
+document.getElementById("solarPacks").innerHTML = SOLAR.filter(s=>s.id!=="none").map(s=>`
+  <div class="solar-pack rv">
+    <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#155941" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg></div>
+    <div><h4>${s.name}</h4><p>${s.save}</p></div>
+    <div class="pp"><b>${fmt(s.price)}</b><span>${s.kw}</span></div>
+  </div>`).join("");
+
+/* ============================================================
+   FINANCING SIMULATOR
+   ============================================================ */
+function pmt(P, r, n){ return r===0 ? P/n : P*r/(1-Math.pow(1+r,-n)); }
+const sim = {model:"v5p", qty:1, solar:"none", bank:"mau", dep:20, term:15};
+
+const simModels = document.getElementById("simModels");
+simModels.innerHTML = MODELS.map(m=>`<button data-v="${m.id}">${m.name.replace("V5 ","V5·").replace("V7 ","V7·")}<br><span class="num" style="font-size:11px">${fmtK(m.price)}</span></button>`).join("");
+const simQty = document.getElementById("simQty");
+simQty.innerHTML = [1,2,3,4].map(q=>`<button data-v="${q}">${q} unit${q>1?"s":""}${q>1?`<br><span style="font-size:10.5px;color:var(--green-700)">−${bundleDisc(q)*100}%</span>`:""}</button>`).join("");
+const simSolar = document.getElementById("simSolar");
+simSolar.innerHTML = SOLAR.map(s=>`<button data-v="${s.id}" style="text-align:left">${s.name}${s.price?`<br><span class="num" style="font-size:11px">+${fmtK(s.price)}</span>`:""}</button>`).join("");
+const bankList = document.getElementById("bankList");
+bankList.innerHTML = BANKS.map(b=>`
+  <div class="bank" data-v="${b.id}">
+    <div class="logo" style="background:${b.color}">${b.name}</div>
+    <div><h4>${b.full}</h4><p>${b.note}</p></div>
+    <div class="rate">${b.rate.toFixed(2)}%<small>indicative p.a.</small></div>
+  </div>`).join("");
+
+function segBind(el, key, cast){
+  el.addEventListener("click", e=>{
+    const btn = e.target.closest("[data-v]"); if(!btn) return;
+    sim[key] = cast ? cast(btn.dataset.v) : btn.dataset.v;
+    [...el.querySelectorAll("[data-v]")].forEach(x=>x.classList.toggle("on", x===btn));
+    calc();
+  });
+}
+segBind(simModels,"model"); segBind(simQty,"qty",Number); segBind(simSolar,"solar"); segBind(bankList,"bank");
+window.setSimModel = id => { sim.model=id; [...simModels.children].forEach(x=>x.classList.toggle("on",x.dataset.v===id)); calc(); };
+
+const depSlider=document.getElementById("depSlider"), termSlider=document.getElementById("termSlider");
+depSlider.addEventListener("input", ()=>{sim.dep=+depSlider.value; document.getElementById("depLabel").textContent=sim.dep+"%"; calc();});
+termSlider.addEventListener("input", ()=>{sim.term=+termSlider.value; document.getElementById("termLabel").textContent=sim.term+" years"; calc();});
+
+let lastQuote = "";
+function calc(){
+  const m = MODELS.find(x=>x.id===sim.model);
+  const s = SOLAR.find(x=>x.id===sim.solar);
+  const b = BANKS.find(x=>x.id===sim.bank);
+  const gross = m.price * sim.qty;
+  const disc = gross * bundleDisc(sim.qty);
+  const pkg = gross - disc + s.price;
+  const deposit = pkg * sim.dep/100;
+  const loan = pkg - deposit;
+  const n = sim.term*12;
+  const monthly = pmt(loan, b.rate/1200, n);
+  const interest = monthly*n - loan;
+  const rent = 3500 * 30 * .60 * sim.qty;   // ₨3,500/night, 60% occupancy
+  const net = monthly - rent;
+
+  document.getElementById("rMonthly").textContent = fmt(monthly);
+  document.getElementById("rSummary").textContent = `${sim.qty}× ${m.name}${s.price?` + ${s.name.split("—")[0].trim()} solar`:""} · ${b.full} @ ${b.rate}% · ${sim.term} yrs`;
+  document.getElementById("rPrice").textContent = fmt(gross);
+  document.getElementById("rBundleRow").style.display = disc ? "flex":"none";
+  document.getElementById("rBundle").textContent = "− "+fmt(disc);
+  document.getElementById("rSolar").textContent = s.price?fmt(s.price):"—";
+  document.getElementById("rDeposit").textContent = fmt(deposit)+` (${sim.dep}%)`;
+  document.getElementById("rLoan").textContent = fmt(loan);
+  document.getElementById("rInterest").textContent = fmt(interest);
+  document.getElementById("rRent").textContent = "≈ "+fmt(rent)+" /mo";
+  const netEl = document.getElementById("rNet");
+  netEl.textContent = (net<=0? "PROFIT ≈ "+fmt(-net) : "≈ "+fmt(net))+" /mo";
+  netEl.style.color = net<=0 ? "#7ADCA8" : "var(--amber)";
+
+  const rows = BANKS.map(bk=>({bk, mo:pmt(loan, bk.rate/1200, n)}));
+  const best = Math.min(...rows.map(r=>r.mo));
+  document.getElementById("cmpBody").innerHTML = rows.map(r=>`
+    <tr class="${r.mo===best?"best":""}"><td>${r.bk.full}${r.mo===best?" ★":""}</td><td>${r.bk.rate.toFixed(2)}%</td><td>${fmt(r.mo)}</td><td>${fmt(r.mo*n-loan)}</td></tr>`).join("");
+
+  lastQuote = `Hi Louis! My simulation on greenlumens.com:\n• ${sim.qty}× ${m.name} (${m.ins})${disc?` — bundle −${bundleDisc(sim.qty)*100}%`:""}\n${s.price?`• Solar: ${s.name}\n`:""}• Package: ${fmt(pkg)}\n• ${b.full} @ ${b.rate}% · ${sim.term} yrs · ${sim.dep}% deposit\n• Monthly: ${fmt(monthly)}\nPlease send me a formal quotation.`;
+}
+document.getElementById("waQuote").addEventListener("click", ()=>{
+  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(lastQuote)}`, "_blank");
+});
+/* defaults */
+simModels.querySelector('[data-v="v5p"]').classList.add("on");
+simQty.querySelector('[data-v="1"]').classList.add("on");
+simSolar.querySelector('[data-v="none"]').classList.add("on");
+bankList.querySelector('[data-v="mau"]').classList.add("on");
+calc();
+
+/* ============================================================
+   PORTFOLIO CARDS
+   ============================================================ */
+(function(){
+  const base = MODELS[0].price; // V5 Compact
+  const rentPerUnit = 3500*30*.60;
+  const plans = [
+    {q:1, t:"The Home", sub:"Live in it, or your first rental", hl:false, badge:""},
+    {q:3, t:"The Trio", sub:"The sweet spot our investors pick", hl:true, badge:"MOST POPULAR"},
+    {q:5, t:"The Micro-Resort", sub:"Boutique hospitality, one loan", hl:false, badge:""}
+  ];
+  document.getElementById("pfGrid").innerHTML = plans.map(p=>{
+    const gross = base*p.q, disc = gross*bundleDisc(p.q), pkg = gross-disc;
+    const rent = rentPerUnit*p.q, yieldPct = (rent*12/pkg*100);
+    return `<div class="pf-card ${p.hl?"hl":""} rv">${p.badge?`<span class="badge">${p.badge}</span>`:""}
+      <h3>${p.t}</h3><div class="pf-sub">${p.q}× V5 Compact — ${p.sub}</div>
+      <div class="pf-num">${fmtK(pkg)}</div>
+      <div class="pf-line"><span>Bundle saving</span><b>${disc?("− "+fmtK(disc)):"—"}</b></div>
+      <div class="pf-line"><span>Est. rental /mo</span><b>≈ ${fmt(rent)}</b></div>
+      <div class="pf-line"><span>Gross yield</span><b>≈ ${yieldPct.toFixed(1)}% p.a.</b></div>
+      <div class="pf-line"><span>Payback</span><b>≈ ${(pkg/(rent*12)).toFixed(1)} yrs</b></div>
+      <a class="btn ${p.hl?"btn-amber":"btn-green"}" style="width:100%;margin-top:18px" href="https://wa.me/${WA}?text=${encodeURIComponent(`Hi Louis! I'm interested in the ${p.t} plan (${p.q}× V5 Compact, ${fmtK(pkg)}). Send me the investor deck please.`)}" target="_blank" rel="noopener">Get the investor deck</a>
+    </div>`;
+  }).join("");
+})();
+
+/* ============================================================
+   LEAD FORM → WHATSAPP  (sales automation, no backend)
+   ============================================================ */
+document.getElementById("leadForm").addEventListener("submit", e=>{
+  e.preventDefault();
+  const g = id=>document.getElementById(id).value.trim();
+  const msg = `Hi Louis! New enquiry from greenlumens.com\n• Name: ${g("lfName")}\n• Interested in: ${g("lfModel")}\n• Use: ${g("lfUse")}\n• Location: ${g("lfLoc")||"—"}\n• Notes: ${g("lfMsg")||"—"}`;
+  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, "_blank");
+});
+document.getElementById("fabWa").href = `https://wa.me/${WA}?text=${encodeURIComponent("Hi Louis! I'm on greenlumens.com and I'd like to know more about the capsule houses.")}`;
+document.getElementById("waDirect").href = `https://wa.me/${WA}`;
+
+/* ============================================================
+   SCROLL REVEAL
+   ============================================================ */
+const io = new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll(".rv").forEach(el=>io.observe(el));
+/* duplicate strip for seamless marquee */
+document.getElementById("strip").innerHTML += document.getElementById("strip").innerHTML;
+</script>
+</body>
+</html>
