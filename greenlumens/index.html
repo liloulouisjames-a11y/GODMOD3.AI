@@ -597,7 +597,7 @@ document.getElementById("gallery").innerHTML = SCENES.map(s=>`
       <h3>${s.title}</h3>
       <p>${s.d}</p>
       <div class="gal-meta"><span style="color:var(--ink-soft)">${s.loc}</span>
-      <a href="https://wa.me/${WA}?text=${encodeURIComponent("Hi Louis! I love “"+s.title+"” on greenlumens.com — can we talk about building it?")}" target="_blank" rel="noopener">I want this →</a></div>
+      <a href="https://wa.me/${WA}?text=${encodeURIComponent("Hi Louis! I love “"+s.title+"” on your website — can we talk about building it?")}" target="_blank" rel="noopener">I want this →</a></div>
     </div>
   </div>`).join("");
 
@@ -753,7 +753,7 @@ function calc(){
   document.getElementById("cmpBody").innerHTML = rows.map(r=>`
     <tr class="${r.mo===best?"best":""}"><td>${r.bk.full}${r.mo===best?" ★":""}</td><td>${r.bk.rate.toFixed(2)}%</td><td>${fmt(r.mo)}</td><td>${fmt(r.mo*n-loan)}</td></tr>`).join("");
 
-  lastQuote = `Hi Louis! My simulation on greenlumens.com:\n• ${sim.qty}× ${m.name} (${m.ins})${disc?` — bundle −${bundleDisc(sim.qty)*100}%`:""}\n${s.price?`• Solar: ${s.name}\n`:""}• Package: ${fmt(pkg)}\n• ${b.full} @ ${b.rate}% · ${sim.term} yrs · ${sim.dep}% deposit\n• Monthly: ${fmt(monthly)}\nPlease send me a formal quotation.`;
+  lastQuote = `Hi Louis! My simulation from your website:\n• ${sim.qty}× ${m.name} (${m.ins})${disc?` — bundle −${bundleDisc(sim.qty)*100}%`:""}\n${s.price?`• Solar: ${s.name}\n`:""}• Package: ${fmt(pkg)}\n• ${b.full} @ ${b.rate}% · ${sim.term} yrs · ${sim.dep}% deposit\n• Monthly: ${fmt(monthly)}\nPlease send me a formal quotation.`;
 }
 document.getElementById("waQuote").addEventListener("click", ()=>{
   window.open(`https://wa.me/${WA}?text=${encodeURIComponent(lastQuote)}`, "_blank");
@@ -797,10 +797,10 @@ calc();
 document.getElementById("leadForm").addEventListener("submit", e=>{
   e.preventDefault();
   const g = id=>document.getElementById(id).value.trim();
-  const msg = `Hi Louis! New enquiry from greenlumens.com\n• Name: ${g("lfName")}\n• Interested in: ${g("lfModel")}\n• Use: ${g("lfUse")}\n• Location: ${g("lfLoc")||"—"}\n• Notes: ${g("lfMsg")||"—"}`;
+  const msg = `Hi Louis! New website enquiry\n• Name: ${g("lfName")}\n• Interested in: ${g("lfModel")}\n• Use: ${g("lfUse")}\n• Location: ${g("lfLoc")||"—"}\n• Notes: ${g("lfMsg")||"—"}`;
   window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, "_blank");
 });
-document.getElementById("fabWa").href = `https://wa.me/${WA}?text=${encodeURIComponent("Hi Louis! I'm on greenlumens.com and I'd like to know more about the capsule houses.")}`;
+document.getElementById("fabWa").href = `https://wa.me/${WA}?text=${encodeURIComponent("Hi Louis! I'm on your website and I'd like to know more about the capsule houses.")}`;
 document.getElementById("waDirect").href = `https://wa.me/${WA}`;
 
 /* ============================================================
