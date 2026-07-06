@@ -83,6 +83,47 @@ Then ask it something like:
 It will pick the browser agent, drive a headless browser, and report back —
 without sending a single paid token when running on a local model.
 
+## System dependencies (beyond pip)
+
+The CLI touches voice, a real browser, and a task queue. On a fresh Linux box
+you also need:
+
+```bash
+# Voice libs (sounddevice/soundfile import at startup even with speak=False)
+apt-get install -y libportaudio2 libsndfile1
+
+# Redis, for the Celery task queue
+apt-get install -y redis-server && service redis-server start   # redis-cli ping -> PONG
+
+# A Chrome/Chromium + a MATCHING chromedriver (same major.build).
+# If autoinstall can't reach the Chrome-for-Testing host, pin the driver from PyPI:
+#   Chromium 141.x  ->
+pip install "chromedriver-py==141.0.7390.122"
+ln -sf "$(python -c 'from chromedriver_py import binary_path;print(binary_path)')" /usr/local/bin/chromedriver
+# ...and make sure that /usr/local/bin entry is found before any mismatched
+# system chromedriver on PATH (agenticSeek uses the first `which chromedriver`).
+```
+
+You can point AgenticSeek at an existing Chromium (e.g. a Playwright build) by
+symlinking it onto one of the paths it probes, such as `/usr/bin/chromium`.
+
+## Running on a restricted / air-gapped network
+
+At startup AgenticSeek downloads a **routing classifier** (`facebook/bart-large-mnli`)
+from HuggingFace, in addition to whatever LLM your provider needs. If HuggingFace
+(or your model host) is unreachable, boot fails at "Loading zero-shot pipeline".
+Pre-cache the models on a networked machine and run offline:
+
+```bash
+# On a machine with access:
+huggingface-cli download facebook/bart-large-mnli
+# then copy ~/.cache/huggingface to the target host and:
+export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
+```
+
+The LLM itself must likewise be reachable — a local Ollama/LM-Studio server
+(zero token cost) or a hosted API endpoint.
+
 ## Notes / gotchas
 
 - **Local model = free but not free of hardware.** `qwen2.5:3b` runs on CPU but
@@ -92,3 +133,8 @@ without sending a single paid token when running on a local model.
   runs shell commands, so keep the backend bound to `127.0.0.1` (the default).
 - If you can't run a local model at all, the **Deepseek API** row above is the
   lowest-cost hosted fallback.
+- **`torch` CPU vs CUDA:** installing with `--extra-index-url .../whl/cpu` can
+  still pull the CUDA build if a sub-dependency 404s on the CPU index and falls
+  back to PyPI. The CUDA wheel imports and runs fine on a CPU-only box (it just
+  carries unused CUDA libs); pin `torch==2.4.1` explicitly first to keep the
+  resolver fast.

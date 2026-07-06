@@ -57,8 +57,16 @@ with open("config.ini", "w") as f:
 print("config.ini set to local ollama / qwen2.5:3b")
 PY
 
+  # System deps: voice libs + Redis (best-effort; needs apt/root).
+  if command -v apt-get >/dev/null; then
+    apt-get install -y libportaudio2 libsndfile1 redis-server >/dev/null 2>&1 || true
+    (service redis-server start >/dev/null 2>&1 || redis-server --daemonize yes >/dev/null 2>&1) || true
+  fi
+
   python3 -m venv venv
   ./venv/bin/pip install --upgrade pip
+  # Anchor torch first so the resolver doesn't backtrack for minutes.
+  ./venv/bin/pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==2.4.1" "numpy<2"
   ./venv/bin/pip install --extra-index-url https://download.pytorch.org/whl/cpu -r requirements.txt
 
   log "AgenticSeek installed. Start a local model (ollama) + SearXNG/Redis, then: ./venv/bin/python cli.py"
