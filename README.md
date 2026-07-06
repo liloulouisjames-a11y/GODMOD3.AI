@@ -175,6 +175,16 @@ G0DM0D3/
 - [PAPER.md](PAPER.md) — Research paper on the framework's modules and evaluation
 - [TERMS.md](TERMS.md) — Terms of service, privacy policy, data handling
 - [SECURITY.md](SECURITY.md) — Vulnerability reporting and security policy
+- [docs/integrations/](docs/integrations/) — Installing & running external AI tools alongside G0DM0D3 (AgentGPT, AgenticSeek, ACE editor)
+
+## 🔌 Integrations
+
+Guides for standing up complementary open-source AI tools next to G0DM0D3.
+Run [`./scripts/install-integrations.sh`](scripts/install-integrations.sh) to clone + install them.
+
+- **[AgentGPT](docs/integrations/AgentGPT.md)** — autonomous goal→task agent (browser UI). Supports a zero-token "mock mode".
+- **[AgenticSeek](docs/integrations/agenticSeek.md)** — 100% local Manus alternative; browses the web and runs code with **near-zero token cost** on local models.
+- **[ACE](docs/integrations/ACE.md)** — embeddable code-editor widget (a runnable demo lives in [`examples/ace-editor/`](examples/ace-editor/)).
 
 ## 🤝 Contributing
 

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ACE embed — G0DM0D3</title>
+<style>
+  html,body{margin:0;height:100%;background:#0d1117;color:#39ff14;font-family:ui-monospace,monospace}
+  #bar{padding:8px 12px;font-size:14px;border-bottom:1px solid #222;display:flex;gap:12px;align-items:center}
+  select{background:#161b22;color:#39ff14;border:1px solid #30363d;font-family:inherit;padding:2px 6px}
+  #editor{position:absolute;top:40px;bottom:0;left:0;right:0}
+</style>
+</head>
+<body>
+  <div id="bar">
+    <span>ACE Editor — G0DM0D3 embed demo</span>
+    <label>mode
+      <select id="mode">
+        <option value="javascript">javascript</option>
+        <option value="python">python</option>
+        <option value="json">json</option>
+        <option value="markdown">markdown</option>
+      </select>
+    </label>
+  </div>
+  <div id="editor">// ACE running locally, no network needed.
+// Loads a bundled ace-builds from node_modules in production.
+function greet(name) {
+  return `Hello, ${name}! Agents deployed.`;
+}
+console.log(greet("GODMOD3.AI"));</div>
+
+  <!--
+    In production, install the prebuilt distribution and serve it locally:
+        npm install ace-builds
+    then point this src at node_modules/ace-builds/src-min-noconflict/ace.js
+    (kept as a relative path here so the demo works offline).
+  -->
+  <script src="./ace-builds/src-min-noconflict/ace.js"></script>
+  <script>
+    const editor = ace.edit("editor");
+    editor.setTheme("ace/theme/monokai");
+    editor.session.setMode("ace/mode/javascript");
+    editor.setOptions({ fontSize: "14px", showPrintMargin: false });
+    document.getElementById("mode").addEventListener("change", (e) => {
+      editor.session.setMode("ace/mode/" + e.target.value);
+    });
+  </script>
+</body>
+</html>
