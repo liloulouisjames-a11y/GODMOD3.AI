@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Next.js build output
+.next/
+out/
+next-env.d.ts
+
+# Env files
+.env
+.env*.local
+
+# Logs & misc
+npm-debug.log*
+*.tsbuildinfo
+.DS_Store
