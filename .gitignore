@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Next.js build output
+.next/
+out/
+next-env.d.ts
+
+# Env files
+.env
+.env*.local
+
+# Python
+__pycache__/
+*.pyc
+
+# Logs & misc
+npm-debug.log*
+*.tsbuildinfo
+.DS_Store
