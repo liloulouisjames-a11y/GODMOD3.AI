@@ -33,6 +33,14 @@ if ! is_up; then
     > "$LOG_FILE" 2>&1 < /dev/null &
 fi
 
+# Start Ollama if installed and not already serving (9router routes to it via
+# the ollama-local provider on http://localhost:11434)
+if command -v ollama >/dev/null 2>&1; then
+  if ! curl -s -o /dev/null --max-time 2 http://127.0.0.1:11434/ 2>/dev/null; then
+    setsid nohup ollama serve > "${LOG_DIR}/ollama.log" 2>&1 < /dev/null &
+  fi
+fi
+
 # Wait until the router responds (Next.js server can take a while on first boot)
 ready=false
 for _ in $(seq 1 60); do
@@ -56,14 +64,14 @@ login() {
     -d "{\"password\":\"${NINEROUTER_PASSWORD:-123456}\"}" 2>/dev/null | grep -q '"success":true'
 }
 
-register_provider() { # $1=provider id, $2=api key, $3=display name
+provider_exists() { # $1=provider id
+  curl -s -b "$COOKIE_JAR" --max-time 10 "${BASE}/api/providers" 2>/dev/null \
+    | grep -q "\"provider\":\"$1\""
+}
+
+register_provider() { # $1=provider id, $2=api key ("" for no-auth providers), $3=display name
   local provider="$1" key="$2" name="$3"
-  [ -n "$key" ] || return 0
-  # Skip if a connection for this provider already exists
-  if curl -s -b "$COOKIE_JAR" --max-time 10 "${BASE}/api/providers" 2>/dev/null \
-      | grep -q "\"provider\":\"${provider}\""; then
-    return 0
-  fi
+  provider_exists "$provider" && return 0
   curl -s -b "$COOKIE_JAR" --max-time 15 -X POST "${BASE}/api/providers" \
     -H 'Content-Type: application/json' \
     -d "{\"provider\":\"${provider}\",\"apiKey\":\"${key}\",\"name\":\"${name}\",\"priority\":1}" \
@@ -72,9 +80,11 @@ register_provider() { # $1=provider id, $2=api key, $3=display name
 }
 
 if login; then
-  register_provider xai      "${XAI_API_KEY:-}"      "xAI (Grok)"
-  register_provider deepseek "${DEEPSEEK_API_KEY:-}" "DeepSeek"
-  register_provider nvidia   "${NVIDIA_API_KEY:-}"   "NVIDIA NIM"
+  [ -n "${XAI_API_KEY:-}" ]      && register_provider xai      "${XAI_API_KEY}"      "xAI (Grok)"
+  [ -n "${DEEPSEEK_API_KEY:-}" ] && register_provider deepseek "${DEEPSEEK_API_KEY}" "DeepSeek"
+  [ -n "${NVIDIA_API_KEY:-}" ]   && register_provider nvidia   "${NVIDIA_API_KEY}"   "NVIDIA NIM"
+  # Ollama needs no API key; register whenever the binary is present
+  command -v ollama >/dev/null 2>&1 && register_provider ollama-local "" "Ollama Local"
 else
   echo "9router: dashboard login failed; skipping provider auto-registration" >&2
 fi

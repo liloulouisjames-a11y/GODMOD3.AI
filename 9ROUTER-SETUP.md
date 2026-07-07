@@ -35,6 +35,17 @@ environment → environment variables), never in the repo:
 | `NVIDIA_API_KEY` | NVIDIA NIM (free tier) |
 | `NINEROUTER_PASSWORD` | Dashboard password override (default `123456`) |
 
+## Ollama
+
+The hook also starts `ollama serve` automatically if the `ollama` binary is installed,
+and registers the no-auth `ollama-local` provider (9router → `http://localhost:11434`).
+To install Ollama once network egress allows it:
+
+```bash
+curl -fsSL https://ollama.com/install.sh | sh
+ollama pull qwen3:4b   # or any model; served as ollama-local/<model> via 9router
+```
+
 ## Network egress requirement
 
 Claude Code on the web environments restrict outbound traffic by network policy.
@@ -44,6 +55,7 @@ allow these hosts (or be set to unrestricted):
 - `api.x.ai`
 - `api.deepseek.com`
 - `integrate.api.nvidia.com`
+- `ollama.com` and `registry.ollama.ai` (Ollama install + model pulls)
 
 Without this, requests fail with `Host not in allowlist`. See
 https://code.claude.com/docs/en/claude-code-on-the-web for network policy configuration.
