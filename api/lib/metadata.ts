@@ -17,14 +17,10 @@
  * - API keys, auth tokens, IP addresses
  * - Any PII whatsoever
  *
- * Storage: in-memory ring buffer with auto-publish to HuggingFace.
- * When the buffer hits 80% capacity, it flushes to HF as JSONL.
- * On graceful shutdown, remaining events are flushed.
- * If HF publishing is not configured, falls back to FIFO eviction.
+ * Storage: in-memory ring buffer, resets on restart.
  */
 
 import { randomUUID } from 'crypto'
-import { registerMetadataStore, checkMetadataThreshold } from './hf-publisher'
 
 // ── Types ────────────────────────────────────────────────────────────
 
@@ -34,7 +30,7 @@ export interface MetadataEvent {
 
   // Request shape
   endpoint: string
-  mode: 'standard' | 'ultraplinian' | 'consortium'
+  mode: 'standard' | 'ultraplinian'
   tier?: string // fast | standard | full (ultraplinian only)
   stream: boolean
 
@@ -92,23 +88,6 @@ export interface MetadataEvent {
 let events: MetadataEvent[] = []
 const MAX_EVENTS = 50000 // ~50k events before eviction
 
-// Track how many events have been flushed so we can use index-based draining
-// instead of copying the entire array on each snapshot.
-let metadataFlushIndex = 0
-
-// Register with HF publisher so it can snapshot/clear our buffer
-registerMetadataStore({
-  snapshot: () => events.slice(metadataFlushIndex),
-  clear: (count: number) => {
-    metadataFlushIndex += count
-    // Compact the array when more than half has been drained to free memory
-    if (metadataFlushIndex > events.length / 2) {
-      events = events.slice(metadataFlushIndex)
-      metadataFlushIndex = 0
-    }
-  },
-})
-
 // ── Recording ────────────────────────────────────────────────────────
 
 export function recordEvent(event: Omit<MetadataEvent, 'id' | 'timestamp'>): string {
@@ -121,10 +100,7 @@ export function recordEvent(event: Omit<MetadataEvent, 'id' | 'timestamp'>): str
 
   events.push(record)
 
-  // Auto-flush to HF when approaching capacity (async, non-blocking)
-  checkMetadataThreshold(events.length, MAX_EVENTS)
-
-  // Evict oldest if over cap (fallback if HF publish is not configured or failed)
+  // Evict oldest if over cap
   if (events.length > MAX_EVENTS) {
     events = events.slice(events.length - MAX_EVENTS)
   }
@@ -382,23 +358,17 @@ export function getStats(): MetadataStats {
       strategy_usage: strategyUsage,
     },
     contexts,
-    latency: (() => {
-      const sorted = durations.sort((a, b) => a - b)
-      return {
-        avg_ms: sorted.length > 0 ? Math.round(sorted.reduce((a, b) => a + b, 0) / sorted.length) : 0,
-        p50_ms: percentileFromSorted(sorted, 50),
-        p95_ms: percentileFromSorted(sorted, 95),
-        p99_ms: percentileFromSorted(sorted, 99),
-      }
-    })(),
-    response_lengths: (() => {
-      const sorted = responseLengths.sort((a, b) => a - b)
-      return {
-        avg: sorted.length > 0 ? Math.round(sorted.reduce((a, b) => a + b, 0) / sorted.length) : 0,
-        p50: percentileFromSorted(sorted, 50),
-        p95: percentileFromSorted(sorted, 95),
-      }
-    })(),
+    latency: {
+      avg_ms: Math.round(durations.reduce((a, b) => a + b, 0) / durations.length),
+      p50_ms: percentile(durations, 50),
+      p95_ms: percentile(durations, 95),
+      p99_ms: percentile(durations, 99),
+    },
+    response_lengths: {
+      avg: Math.round(responseLengths.reduce((a, b) => a + b, 0) / responseLengths.length),
+      p50: percentile(responseLengths, 50),
+      p95: percentile(responseLengths, 95),
+    },
     streaming: {
       stream_rate: Math.round((streamCount / total) * 100) / 100,
       avg_upgrades: streamWithLiquidCount > 0 ? Math.round((upgradeSum / streamWithLiquidCount) * 100) / 100 : 0,
@@ -414,9 +384,9 @@ export function getStats(): MetadataStats {
 
 // ── Helpers ──────────────────────────────────────────────────────────
 
-/** Compute a single percentile from an already-sorted array. */
-function percentileFromSorted(sorted: number[], p: number): number {
-  if (sorted.length === 0) return 0
+function percentile(arr: number[], p: number): number {
+  if (arr.length === 0) return 0
+  const sorted = [...arr].sort((a, b) => a - b)
   const idx = Math.ceil((p / 100) * sorted.length) - 1
   return sorted[Math.max(0, idx)]
 }
