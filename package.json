@@ -10,7 +10,10 @@
     "start": "next start",
     "lint": "next lint",
     "api": "tsx api/server.ts",
-    "api:dev": "tsx watch api/server.ts"
+    "api:dev": "tsx watch api/server.ts",
+    "gateway": "tsx api/gateway.ts",
+    "gateway:dev": "tsx watch api/gateway.ts",
+    "services": "npm run api & npm run gateway"
   },
   "dependencies": {
     "cors": "^2.8.6",
@@ -27,6 +30,7 @@
     "react-syntax-highlighter": "^15.5.0",
     "tsx": "^4.21.0",
     "uuid": "^9.0.0",
+    "ws": "^8.21.0",
     "zustand": "^4.5.0"
   },
   "devDependencies": {
