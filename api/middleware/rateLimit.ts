@@ -1,20 +1,18 @@
 /**
- * Rate Limiting Middleware (Tier-Aware)
+ * Rate Limiting Middleware
  *
- * In-memory rate limiter that reads limits from the request's tierConfig
- * (set by auth middleware). Falls back to env-var defaults if no tier is set.
+ * In-memory rate limiter with three tiers:
+ *   1. Total lifetime cap per key (default: 5) — hard cutoff for research preview
+ *   2. Per-minute sliding window (default: 60)
+ *   3. Per-day sliding window (default: 1000)
  *
- * Three sliding windows per key:
- *   1. Total lifetime cap (0 = unlimited)
- *   2. Per-minute
- *   3. Per-day
+ * Set RATE_LIMIT_TOTAL=0 to disable the lifetime cap.
  *
  * Designed for a research preview — not a production-grade limiter.
  * For production, use Redis-backed rate limiting.
  */
 
 import type { Request, Response, NextFunction } from 'express'
-import type { TierConfig } from '../lib/tiers'
 
 interface RateBucket {
   totalRequests: number       // lifetime count (never resets)
@@ -22,38 +20,28 @@ interface RateBucket {
   dayRequests: number[]
 }
 
+const TOTAL_LIMIT = parseInt(process.env.RATE_LIMIT_TOTAL || '5', 10)
+const MINUTE_LIMIT = parseInt(process.env.RATE_LIMIT_PER_MINUTE || '60', 10)
+const DAY_LIMIT = parseInt(process.env.RATE_LIMIT_PER_DAY || '1000', 10)
 const MINUTE_MS = 60 * 1000
 const DAY_MS = 24 * 60 * 60 * 1000
 
-// NOTE: In-memory only — resets on process/container restart.
-// For production, use Redis-backed rate limiting.
 const buckets = new Map<string, RateBucket>()
 
 // Clean up stale sliding-window entries every 10 minutes
-// Remove empty buckets that have exhausted their lifetime cap to prevent unbounded growth.
+// (totalRequests never gets cleaned — it's a lifetime counter)
 setInterval(() => {
   const now = Date.now()
   for (const [key, bucket] of buckets) {
     bucket.minuteRequests = bucket.minuteRequests.filter(t => now - t < MINUTE_MS)
     bucket.dayRequests = bucket.dayRequests.filter(t => now - t < DAY_MS)
-    // Remove buckets that have no sliding-window activity and haven't hit their
-    // lifetime cap (i.e. they're inactive and can be safely reclaimed).
-    // Buckets that hit the total limit stay so they remain blocked.
-    if (bucket.minuteRequests.length === 0 && bucket.dayRequests.length === 0 && bucket.totalRequests === 0) {
-      buckets.delete(key)
-    }
+    // Don't delete buckets that still have a total count — they need to stay blocked
   }
 }, 10 * 60 * 1000)
 
 export function rateLimit(req: Request, res: Response, next: NextFunction): void {
-  const keyId = req.apiKeyId || 'unknown'
-  const tierConfig: TierConfig | undefined = req.tierConfig
+  const keyId = (req as any).apiKeyId || 'unknown'
   const now = Date.now()
-
-  // Resolve limits from tier config or fall back to env defaults
-  const TOTAL_LIMIT = tierConfig?.rateLimit.total ?? parseInt(process.env.RATE_LIMIT_TOTAL || '5', 10)
-  const MINUTE_LIMIT = tierConfig?.rateLimit.perMinute ?? parseInt(process.env.RATE_LIMIT_PER_MINUTE || '60', 10)
-  const DAY_LIMIT = tierConfig?.rateLimit.perDay ?? parseInt(process.env.RATE_LIMIT_PER_DAY || '1000', 10)
 
   if (!buckets.has(keyId)) {
     buckets.set(keyId, { totalRequests: 0, minuteRequests: [], dayRequests: [] })
@@ -63,17 +51,12 @@ export function rateLimit(req: Request, res: Response, next: NextFunction): void
 
   // ── Check lifetime total cap (hard cutoff) ──────────────────────
   if (TOTAL_LIMIT > 0 && bucket.totalRequests >= TOTAL_LIMIT) {
-    const tier = req.tier || 'free'
     res.status(429).json({
       error: 'Request limit reached for this API key',
       limit: TOTAL_LIMIT,
       used: bucket.totalRequests,
       remaining: 0,
-      current_tier: tier,
-      note: tier === 'free'
-        ? 'Free tier has a limited number of requests. Upgrade to Pro or Enterprise for higher limits.'
-        : 'Contact support to increase your limits.',
-      upgrade: tier === 'free' ? 'Set GODMODE_TIER_KEYS to assign a higher tier to your API key.' : undefined,
+      note: 'This is a research preview with a limited number of requests per key. Contact the API host for more access.',
     })
     return
   }
@@ -90,7 +73,6 @@ export function rateLimit(req: Request, res: Response, next: NextFunction): void
       limit: MINUTE_LIMIT,
       window: '1 minute',
       retry_after_seconds: retryAfter,
-      current_tier: req.tier || 'free',
     })
     return
   }
@@ -103,7 +85,6 @@ export function rateLimit(req: Request, res: Response, next: NextFunction): void
       limit: DAY_LIMIT,
       window: '24 hours',
       retry_after_seconds: retryAfter,
-      current_tier: req.tier || 'free',
     })
     return
   }
@@ -121,7 +102,6 @@ export function rateLimit(req: Request, res: Response, next: NextFunction): void
   res.setHeader('X-RateLimit-Remaining-Minute', MINUTE_LIMIT - bucket.minuteRequests.length)
   res.setHeader('X-RateLimit-Limit-Day', DAY_LIMIT)
   res.setHeader('X-RateLimit-Remaining-Day', DAY_LIMIT - bucket.dayRequests.length)
-  res.setHeader('X-Tier', req.tier || 'free')
 
   next()
 }

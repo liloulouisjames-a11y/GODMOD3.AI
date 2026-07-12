@@ -17,12 +17,9 @@
  * - No PII: API keys, IPs, and auth tokens are NEVER stored
  * - Dataset is exportable via GET /v1/dataset/export
  * - Caller can request deletion via DELETE /v1/dataset/:id
- *
- * Persistence: auto-publishes to HuggingFace when buffer fills up.
  */
 
 import { randomUUID } from 'crypto'
-import { registerDatasetStore, checkDatasetThreshold } from './hf-publisher'
 
 // ── Types ────────────────────────────────────────────────────────────
 
@@ -80,29 +77,12 @@ export interface DatasetEntry {
   }
 }
 
-// ── In-Memory Store with Auto-Publish ────────────────────────────────
-// Buffer auto-flushes to HuggingFace when it hits 80% capacity.
-// Falls back to FIFO eviction if HF publishing is not configured.
+// ── In-Memory Store ──────────────────────────────────────────────────
+// For a research preview, in-memory is fine. For production, swap with
+// a persistent store (SQLite, PostgreSQL, or HF Dataset repo push).
 
 let dataset: DatasetEntry[] = []
 const MAX_ENTRIES = 10000 // Cap to prevent unbounded memory growth
-
-// Track how many entries have been flushed so we can use index-based draining
-// instead of copying the entire array on each snapshot.
-let datasetFlushIndex = 0
-
-// Register with HF publisher so it can snapshot/clear our buffer
-registerDatasetStore({
-  snapshot: () => dataset.slice(datasetFlushIndex),
-  clear: (count: number) => {
-    datasetFlushIndex += count
-    // Compact the array when more than half has been drained to free memory
-    if (datasetFlushIndex > dataset.length / 2) {
-      dataset = dataset.slice(datasetFlushIndex)
-      datasetFlushIndex = 0
-    }
-  },
-})
 
 // ── Public API ───────────────────────────────────────────────────────
 
@@ -116,10 +96,7 @@ export function addEntry(entry: Omit<DatasetEntry, 'id' | 'timestamp'>): string 
 
   dataset.push(record)
 
-  // Auto-flush to HF when approaching capacity (async, non-blocking)
-  checkDatasetThreshold(dataset.length, MAX_ENTRIES)
-
-  // Evict oldest entries if over cap (fallback if HF not configured or failed)
+  // Evict oldest entries if over cap
   if (dataset.length > MAX_ENTRIES) {
     dataset = dataset.slice(dataset.length - MAX_ENTRIES)
   }
@@ -145,7 +122,7 @@ export function deleteEntry(id: string): boolean {
 }
 
 export function getDataset(): DatasetEntry[] {
-  return [...dataset]
+  return dataset
 }
 
 export function getDatasetStats(): {
