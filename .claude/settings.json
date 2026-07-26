@@ -1,0 +1,22 @@
+{
+  "extraKnownMarketplaces": {
+    "openai-codex": {
+      "source": {
+        "source": "github",
+        "repo": "openai/codex-plugin-cc"
+      }
+    },
+    "claude-code-skills": {
+      "source": {
+        "source": "github",
+        "repo": "alirezarezvani/claude-skills"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "codex@openai-codex": true,
+    "business-growth-skills@claude-code-skills": true,
+    "commercial-skills@claude-code-skills": true,
+    "marketing-skills@claude-code-skills": true
+  }
+}

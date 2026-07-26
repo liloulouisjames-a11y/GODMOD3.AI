@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "whatsapp": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "tools/mcp/whatsapp-mcp/dist/index.js"
+      ],
+      "env": {
+        "AUTH_DIR": "tools/mcp/whatsapp-mcp/auth_info_baileys",
+        "LOG_LEVEL": "error",
+        "LOG_PRETTY": "false"
+      }
+    }
+  }
+}

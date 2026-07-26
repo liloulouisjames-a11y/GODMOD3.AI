@@ -1,0 +1,7 @@
+node_modules/
+
+# WhatsApp session credentials — logging in writes the linked-device keys here.
+# Anyone with this directory can act as your WhatsApp account. Never commit it.
+auth_info_baileys/
+*.log
+.env
